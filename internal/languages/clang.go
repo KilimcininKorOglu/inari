@@ -39,7 +39,7 @@ func (p *CLangPlugin) Language() SupportedLanguage {
 
 // Extensions returns ["c", "h"].
 func (p *CLangPlugin) Extensions() []string {
-	return []string{"c", "h"}
+	return []string{"c"}
 }
 
 // TSLanguage returns the tree-sitter C grammar.

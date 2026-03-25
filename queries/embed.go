@@ -113,3 +113,11 @@ var CSymbolsQuery string
 
 //go:embed c/edges.scm
 var CEdgesQuery string
+
+// C++ queries
+
+//go:embed cpp/symbols.scm
+var CppSymbolsQuery string
+
+//go:embed cpp/edges.scm
+var CppEdgesQuery string

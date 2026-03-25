@@ -172,6 +172,11 @@ func detectLanguages(projectRoot string) []string {
 		languages = append(languages, "swift")
 	}
 
+	// C++ detection.
+	if hasCppFiles(projectRoot) {
+		languages = append(languages, "cpp")
+	}
+
 	// C detection.
 	if hasCSourceFiles(projectRoot) {
 		languages = append(languages, "c")
@@ -207,6 +212,39 @@ func hasCSharpFiles(projectRoot string) bool {
 		name := entry.Name()
 		if strings.HasSuffix(name, ".csproj") || strings.HasSuffix(name, ".sln") {
 			return true
+		}
+	}
+	return false
+}
+
+// hasCppFiles checks if the project root contains .cpp/.cc/.cxx files.
+func hasCppFiles(projectRoot string) bool {
+	cppExts := []string{".cpp", ".cc", ".cxx"}
+	entries, err := os.ReadDir(projectRoot)
+	if err != nil {
+		return false
+	}
+	for _, entry := range entries {
+		if entry.IsDir() {
+			continue
+		}
+		for _, ext := range cppExts {
+			if strings.HasSuffix(entry.Name(), ext) {
+				return true
+			}
+		}
+	}
+	srcDir := filepath.Join(projectRoot, "src")
+	if info, err := os.Stat(srcDir); err == nil && info.IsDir() {
+		srcEntries, err := os.ReadDir(srcDir)
+		if err == nil {
+			for _, entry := range srcEntries {
+				for _, ext := range cppExts {
+					if strings.HasSuffix(entry.Name(), ext) {
+						return true
+					}
+				}
+			}
 		}
 	}
 	return false
@@ -345,6 +383,8 @@ func languageDisplayName(lang string) string {
 		return "Bash"
 	case "c":
 		return "C"
+	case "cpp":
+		return "C++"
 	default:
 		return lang
 	}

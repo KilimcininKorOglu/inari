@@ -44,6 +44,8 @@ const (
 	Bash
 	// CLang represents .c and .h files.
 	CLang
+	// Cpp represents .cpp, .cc, .cxx, .hpp, .hxx files.
+	Cpp
 )
 
 // AsStr returns the language name as a lowercase identifier string.
@@ -75,6 +77,8 @@ func (l SupportedLanguage) AsStr() string {
 		return "bash"
 	case CLang:
 		return "c"
+	case Cpp:
+		return "cpp"
 	default:
 		return "unknown"
 	}
@@ -109,6 +113,8 @@ func (l SupportedLanguage) String() string {
 		return "Bash"
 	case CLang:
 		return "C"
+	case Cpp:
+		return "C++"
 	default:
 		return fmt.Sprintf("SupportedLanguage(%d)", int(l))
 	}

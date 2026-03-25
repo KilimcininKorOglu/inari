@@ -2,7 +2,7 @@
 
 ## Shipped
 
-- [x] TypeScript, C#, Python, Rust, Go, Java, Kotlin, Ruby, PHP, Lua, Swift, Bash, C symbol extraction with edge detection
+- [x] TypeScript, C#, Python, Rust, Go, Java, Kotlin, Ruby, PHP, Lua, Swift, Bash, C, C++ symbol extraction with edge detection
 - [x] SQLite dependency graph with recursive impact traversal
 - [x] Full-text search with FTS5, BM25 ranking, importance-tier boosting
 - [x] 19 commands including rdeps, similar, source (fully implemented)
@@ -14,7 +14,6 @@
 
 ## Next
 
-- [ ] C++ language support
 - [ ] Protobuf language support
 - [ ] SQL language support
 - [ ] Vector embeddings via local ONNX model
