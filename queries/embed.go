@@ -121,3 +121,11 @@ var CppSymbolsQuery string
 
 //go:embed cpp/edges.scm
 var CppEdgesQuery string
+
+// Protobuf queries
+
+//go:embed protobuf/symbols.scm
+var ProtobufSymbolsQuery string
+
+//go:embed protobuf/edges.scm
+var ProtobufEdgesQuery string

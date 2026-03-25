@@ -46,6 +46,8 @@ const (
 	CLang
 	// Cpp represents .cpp, .cc, .cxx, .hpp, .hxx files.
 	Cpp
+	// Protobuf represents .proto files.
+	Protobuf
 )
 
 // AsStr returns the language name as a lowercase identifier string.
@@ -79,6 +81,8 @@ func (l SupportedLanguage) AsStr() string {
 		return "c"
 	case Cpp:
 		return "cpp"
+	case Protobuf:
+		return "protobuf"
 	default:
 		return "unknown"
 	}
@@ -115,6 +119,8 @@ func (l SupportedLanguage) String() string {
 		return "C"
 	case Cpp:
 		return "C++"
+	case Protobuf:
+		return "Protocol Buffers"
 	default:
 		return fmt.Sprintf("SupportedLanguage(%d)", int(l))
 	}

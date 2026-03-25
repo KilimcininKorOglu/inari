@@ -89,6 +89,7 @@ func NewIndexer() (*Indexer, error) {
 		&languages.BashPlugin{},
 		&languages.CLangPlugin{},
 		&languages.CppPlugin{},
+		&languages.ProtobufPlugin{},
 	}
 
 	for _, plugin := range plugins {

@@ -7,7 +7,7 @@ import (
 // TestSketchAcrossLanguages runs sketch on PaymentService across all language fixtures.
 // Ensures core command behavior is not TypeScript-specific.
 func TestSketchAcrossLanguages(t *testing.T) {
-	fixtures := []string{"typescript-simple", "python-simple", "rust-simple", "csharp-simple", "go-simple", "java-simple", "kotlin-simple", "ruby-simple", "php-simple", "swift-simple", "cpp-simple"}
+	fixtures := []string{"typescript-simple", "python-simple", "rust-simple", "csharp-simple", "go-simple", "java-simple", "kotlin-simple", "ruby-simple", "php-simple", "swift-simple", "cpp-simple", "protobuf-simple"}
 	for _, fixture := range fixtures {
 		t.Run(fixture, func(t *testing.T) {
 			dir := setupIndexedFixture(t, fixture)
@@ -19,7 +19,7 @@ func TestSketchAcrossLanguages(t *testing.T) {
 
 // TestFindAcrossLanguages runs find on PaymentService across all language fixtures.
 func TestFindAcrossLanguages(t *testing.T) {
-	fixtures := []string{"typescript-simple", "python-simple", "rust-simple", "csharp-simple", "go-simple", "java-simple", "kotlin-simple", "ruby-simple", "php-simple", "swift-simple", "cpp-simple"}
+	fixtures := []string{"typescript-simple", "python-simple", "rust-simple", "csharp-simple", "go-simple", "java-simple", "kotlin-simple", "ruby-simple", "php-simple", "swift-simple", "cpp-simple", "protobuf-simple"}
 	for _, fixture := range fixtures {
 		t.Run(fixture, func(t *testing.T) {
 			dir := setupIndexedFixture(t, fixture)
@@ -56,6 +56,7 @@ func TestRefsAcrossLanguages(t *testing.T) {
 		{"bash-simple", "process_payment"},
 		{"c-simple", "process_payment"},
 		{"cpp-simple", "processPayment"},
+		{"protobuf-simple", "ProcessPayment"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.fixture, func(t *testing.T) {
@@ -85,6 +86,7 @@ func TestMapAcrossLanguages(t *testing.T) {
 		{"bash-simple", "process_payment"},
 		{"c-simple", "process_payment"},
 		{"cpp-simple", "PaymentService"},
+		{"protobuf-simple", "PaymentRequest"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.fixture, func(t *testing.T) {

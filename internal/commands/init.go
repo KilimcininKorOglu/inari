@@ -187,6 +187,14 @@ func detectLanguages(projectRoot string) []string {
 		languages = append(languages, "bash")
 	}
 
+	// Protobuf detection.
+	if fileExists(filepath.Join(projectRoot, "buf.yaml")) ||
+		fileExists(filepath.Join(projectRoot, "buf.gen.yaml")) ||
+		fileExists(filepath.Join(projectRoot, "buf.work.yaml")) ||
+		hasProtoFiles(projectRoot) {
+		languages = append(languages, "protobuf")
+	}
+
 	// Lua detection.
 	if fileExists(filepath.Join(projectRoot, ".luarc.json")) ||
 		fileExists(filepath.Join(projectRoot, ".luarc.jsonc")) ||
@@ -385,7 +393,26 @@ func languageDisplayName(lang string) string {
 		return "C"
 	case "cpp":
 		return "C++"
+	case "protobuf":
+		return "Protocol Buffers"
 	default:
 		return lang
 	}
+}
+
+// hasProtoFiles checks if the project root or proto/ subdirectory contains .proto files.
+func hasProtoFiles(projectRoot string) bool {
+	dirs := []string{projectRoot, filepath.Join(projectRoot, "proto"), filepath.Join(projectRoot, "src")}
+	for _, dir := range dirs {
+		entries, err := os.ReadDir(dir)
+		if err != nil {
+			continue
+		}
+		for _, entry := range entries {
+			if !entry.IsDir() && strings.HasSuffix(entry.Name(), ".proto") {
+				return true
+			}
+		}
+	}
+	return false
 }

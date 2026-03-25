@@ -133,22 +133,23 @@ inari index --watch                      # auto re-index on file changes
 
 ## Supported languages
 
-| Language   | Status | Highlights                                                            |
-|------------|--------|-----------------------------------------------------------------------|
-| TypeScript | Ready  | Full edge detection, async/static/abstract modifiers, JSX support.    |
-| C#         | Ready  | Partial class merging, visibility modifiers, async/virtual/override.  |
-| Python     | Ready  | Decorator extraction, docstring capture, classmethod/staticmethod.    |
-| Rust       | Ready  | Impl block association, visibility modifiers (`pub`, `pub(crate)`).   |
-| Go         | Ready  | Exported/unexported detection, receiver types, composite literals.    |
-| Java       | Ready  | Access modifiers, abstract/final/synchronized, extends/implements.    |
-| Kotlin     | Ready  | Visibility modifiers, data/sealed/inner classes, suspend/inline.      |
-| Ruby       | Ready  | Module support, mixin edges (include/extend/prepend), attr macros.    |
-| PHP        | Ready  | Namespace as module, trait edges, static calls, visibility modifiers. |
-| Lua        | Ready  | Table-based OOP, require imports, colon-syntax method calls.          |
-| Swift      | Ready  | Protocol as interface, class/struct/enum, navigation expressions.     |
-| Bash       | Ready  | Function definitions, source/. imports, command call detection.       |
-| C          | Ready  | Functions, structs, enums, typedefs, #include imports.                |
-| C++        | Ready  | Classes, namespaces, inheritance, member/scoped calls, new.           |
+| Language         | Status | Highlights                                                            |
+|------------------|--------|-----------------------------------------------------------------------|
+| TypeScript       | Ready  | Full edge detection, async/static/abstract modifiers, JSX support.    |
+| C#               | Ready  | Partial class merging, visibility modifiers, async/virtual/override.  |
+| Python           | Ready  | Decorator extraction, docstring capture, classmethod/staticmethod.    |
+| Rust             | Ready  | Impl block association, visibility modifiers (`pub`, `pub(crate)`).   |
+| Go               | Ready  | Exported/unexported detection, receiver types, composite literals.    |
+| Java             | Ready  | Access modifiers, abstract/final/synchronized, extends/implements.    |
+| Kotlin           | Ready  | Visibility modifiers, data/sealed/inner classes, suspend/inline.      |
+| Ruby             | Ready  | Module support, mixin edges (include/extend/prepend), attr macros.    |
+| PHP              | Ready  | Namespace as module, trait edges, static calls, visibility modifiers. |
+| Lua              | Ready  | Table-based OOP, require imports, colon-syntax method calls.          |
+| Swift            | Ready  | Protocol as interface, class/struct/enum, navigation expressions.     |
+| Bash             | Ready  | Function definitions, source/. imports, command call detection.       |
+| C                | Ready  | Functions, structs, enums, typedefs, #include imports.                |
+| C++              | Ready  | Classes, namespaces, inheritance, member/scoped calls, new.           |
+| Protocol Buffers | Ready  | Messages, enums, services, rpc methods, field/type references.        |
 
 Each language is a plugin: a tree-sitter grammar and two `.scm` query files (`symbols.scm`, `edges.scm`). Adding a new language requires ~200 lines of Go.
 

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package controller.v1;
+
+import "payments.proto";
+
+message OrderRequest {
+  string order_id = 1;
+  PaymentRequest payment = 2;
+}
+
+message OrderResponse {
+  string order_id = 1;
+  PaymentResponse result = 2;
+}
+
+service OrderController {
+  rpc CreateOrder(OrderRequest) returns (OrderResponse);
+}
