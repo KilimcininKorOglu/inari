@@ -704,23 +704,41 @@
           </div>
           <div class="card-body claude-preview p-3 p-md-4">
             <span class="md-h2">## Code Navigation</span><br><br>
-            <span class="text-body-secondary">This project uses Inari for code intelligence.</span><br>
-            <span class="text-body-secondary">Start with `inari map`, then drill down.</span><br><br>
+            <span class="text-body-secondary">This project uses Inari for structural code intelligence.</span><br>
+            <span class="text-body-secondary">Start with <span class="md-code">`inari map`</span> for a repo overview, then <span class="md-code">`inari sketch`</span> for specific symbols.</span><br><br>
             <span class="md-h3">**Orientation:**</span>
-            <span class="md-li"><span class="md-code">`inari map`</span> -- full repo overview (~500-1000 tokens)</span>
-            <span class="md-li"><span class="md-code">`inari entrypoints`</span> -- API controllers, workers</span>
+            <span class="md-li"><span class="md-code">`inari map`</span> -- full repo overview: entry points, core symbols, architecture (~500-1000 tokens)</span>
+            <span class="md-li"><span class="md-code">`inari entrypoints`</span> -- list API controllers, workers, event handlers</span>
+            <span class="md-li"><span class="md-code">`inari status`</span> -- check index health and freshness</span>
             <br>
-            <span class="md-h3">**Before editing:**</span>
-            <span class="md-li"><span class="md-code">`inari sketch &lt;symbol&gt;`</span> -- structural overview</span>
-            <span class="md-li"><span class="md-code">`inari refs &lt;symbol&gt;`</span> -- all references with file + line</span>
-            <span class="md-li"><span class="md-code">`inari callers &lt;symbol&gt;`</span> -- blast radius</span>
+            <span class="md-h3">**Before editing a class or function:**</span>
+            <span class="md-li"><span class="md-code">`inari sketch &lt;symbol&gt;`</span> -- structural overview: methods, deps, modifiers (~200 tokens)</span>
+            <span class="md-li"><span class="md-code">`inari refs &lt;symbol&gt; [--kind calls|imports|...]`</span> -- all references with file + line</span>
+            <span class="md-li"><span class="md-code">`inari callers &lt;symbol&gt; [--depth N]`</span> -- direct and transitive callers for blast radius</span>
             <br>
-            <span class="md-h3">**Finding code and flow:**</span>
-            <span class="md-li"><span class="md-code">`inari find "&lt;query&gt;"`</span> -- search by intent</span>
-            <span class="md-li"><span class="md-code">`inari trace &lt;symbol&gt;`</span> -- entry-point-to-target paths</span>
+            <span class="md-h3">**Finding code:**</span>
+            <span class="md-li"><span class="md-code">`inari find "&lt;query&gt;" [--kind function|class|...]`</span> -- full-text search by intent</span>
             <br>
-            <span class="md-comment">// always inari sketch before reading source.</span>
-            <span class="md-comment">// auto re-index: inari index --watch</span>
+            <span class="md-h3">**Understanding dependencies and flow:**</span>
+            <span class="md-li"><span class="md-code">`inari deps &lt;symbol&gt; [--depth 1-3]`</span> -- what does this depend on?</span>
+            <span class="md-li"><span class="md-code">`inari rdeps &lt;symbol&gt; [--depth 1-3]`</span> -- what depends on this?</span>
+            <span class="md-li"><span class="md-code">`inari trace &lt;symbol&gt;`</span> -- call paths from entry points to target</span>
+            <span class="md-li"><span class="md-code">`inari similar &lt;symbol&gt;`</span> -- find structurally similar symbols</span>
+            <span class="md-li"><span class="md-code">`inari source &lt;symbol&gt;`</span> -- fetch full source code of a symbol</span>
+            <br>
+            <span class="md-h3">**Keeping the index fresh:**</span>
+            <span class="md-li"><span class="md-code">`inari index`</span> -- incremental re-index after edits (&lt; 1s for a few files)</span>
+            <span class="md-li"><span class="md-code">`inari index --watch`</span> -- auto re-index on file changes (runs in background)</span>
+            <span class="md-li">Line numbers reflect the last index run. Re-index if they look wrong.</span>
+            <br>
+            <span class="md-h3">**Multi-project workspaces:**</span>
+            <span class="md-li"><span class="md-code">`inari workspace init`</span> -- discover projects and create <span class="md-code">`inari-workspace.toml`</span></span>
+            <span class="md-li"><span class="md-code">`inari workspace index`</span> -- index all workspace members</span>
+            <span class="md-li"><span class="md-code">`inari workspace list`</span> -- list members with status and symbol counts</span>
+            <span class="md-li">Any command with <span class="md-code">`--workspace`</span> -- fan out queries across all members</span>
+            <span class="md-li"><span class="md-code">`--project &lt;name&gt;`</span> -- target a specific workspace member by name</span>
+            <br>
+            <span class="md-comment">Always `inari sketch` before reading full source. Only read source when ready to edit.</span>
           </div>
         </div>
       </div>

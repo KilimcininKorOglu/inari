@@ -208,41 +208,7 @@ Inari works with any AI coding agent that can execute shell commands. Add the sn
 | Aider              | `.aider.conf.yml`                       |
 | Windsurf / Codeium | `.windsurfrules`                        |
 
-The full snippet is available at [`docs/CLAUDE.md.snippet`](docs/CLAUDE.md.snippet).
-
-```markdown
-## Code Navigation
-
-This project uses [Inari](https://github.com/KilimcininKorOglu/inari) for structural code intelligence.
-Start with `inari map` for a repo overview, then `inari sketch` for specific symbols.
-
-**Orientation:**
-- `inari map` -- full repo overview: entry points, core symbols, architecture (~500-1000 tokens)
-- `inari entrypoints` -- list API controllers, workers, event handlers
-- `inari status` -- check index health and freshness
-
-**Before editing a class or function:**
-- `inari sketch <symbol>` -- structural overview: methods, deps, modifiers (~200 tokens)
-- `inari refs <symbol> [--kind calls|imports|extends|implements|...]` -- all references with file + line
-- `inari callers <symbol> [--depth N]` -- direct and transitive callers for blast radius
-
-**Finding code:**
-- `inari find "<query>" [--kind function|class|method|interface]` -- full-text search by intent
-
-**Understanding dependencies and flow:**
-- `inari deps <symbol> [--depth 1-3]` -- what does this depend on?
-- `inari rdeps <symbol> [--depth 1-3]` -- what depends on this?
-- `inari trace <symbol>` -- call paths from entry points to target
-- `inari similar <symbol>` -- find structurally similar symbols
-- `inari source <symbol>` -- fetch full source code of a symbol
-
-**Keeping the index fresh:**
-- `inari index` -- incremental re-index after edits (< 1s for a few files)
-- `inari index --watch` -- auto re-index on file changes (runs in background)
-- Line numbers reflect the last index run. Re-index if they look wrong.
-
-Always `inari sketch` before reading full source. Only read source when ready to edit.
-```
+The snippet is available at [`docs/CLAUDE.md.snippet`](docs/CLAUDE.md.snippet). Copy its contents into your agent's instruction file.
 
 ---
 
