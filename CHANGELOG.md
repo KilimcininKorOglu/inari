@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2026-03-25
+
+### Added
+- Protocol Buffers language support with messages, enums, services, rpc methods, and field/type references
+- SQL language support with tables, views, functions, column definitions, and FK/JOIN references
+- Workspace commands to agent integration snippet (CLAUDE.md.snippet)
+
+### Changed
+- Unified agent snippet across README and landing page — single source of truth in docs/CLAUDE.md.snippet
+
 ## [1.3.5] - 2026-03-25
 
 ### Fixed
