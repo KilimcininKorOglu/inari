@@ -48,6 +48,8 @@ const (
 	Cpp
 	// Protobuf represents .proto files.
 	Protobuf
+	// SQL represents .sql files.
+	SQL
 )
 
 // AsStr returns the language name as a lowercase identifier string.
@@ -83,6 +85,8 @@ func (l SupportedLanguage) AsStr() string {
 		return "cpp"
 	case Protobuf:
 		return "protobuf"
+	case SQL:
+		return "sql"
 	default:
 		return "unknown"
 	}
@@ -121,6 +125,8 @@ func (l SupportedLanguage) String() string {
 		return "C++"
 	case Protobuf:
 		return "Protocol Buffers"
+	case SQL:
+		return "SQL"
 	default:
 		return fmt.Sprintf("SupportedLanguage(%d)", int(l))
 	}

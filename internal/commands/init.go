@@ -187,6 +187,11 @@ func detectLanguages(projectRoot string) []string {
 		languages = append(languages, "bash")
 	}
 
+	// SQL detection.
+	if hasSQLFiles(projectRoot) {
+		languages = append(languages, "sql")
+	}
+
 	// Protobuf detection.
 	if fileExists(filepath.Join(projectRoot, "buf.yaml")) ||
 		fileExists(filepath.Join(projectRoot, "buf.gen.yaml")) ||
@@ -395,6 +400,8 @@ func languageDisplayName(lang string) string {
 		return "C++"
 	case "protobuf":
 		return "Protocol Buffers"
+	case "sql":
+		return "SQL"
 	default:
 		return lang
 	}
@@ -410,6 +417,41 @@ func hasProtoFiles(projectRoot string) bool {
 		}
 		for _, entry := range entries {
 			if !entry.IsDir() && strings.HasSuffix(entry.Name(), ".proto") {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// hasSQLFiles checks if the project contains .sql files in common locations or migration markers.
+func hasSQLFiles(projectRoot string) bool {
+	// Check for migration tool markers.
+	markers := []string{
+		"flyway.conf",
+		"knexfile.js", "knexfile.ts",
+		"alembic.ini",
+		"dbmate.yml",
+	}
+	for _, m := range markers {
+		if fileExists(filepath.Join(projectRoot, m)) {
+			return true
+		}
+	}
+
+	// Check common SQL directories.
+	dirs := []string{
+		filepath.Join(projectRoot, "sql"),
+		filepath.Join(projectRoot, "migrations"),
+		filepath.Join(projectRoot, "db"),
+	}
+	for _, dir := range dirs {
+		entries, err := os.ReadDir(dir)
+		if err != nil {
+			continue
+		}
+		for _, entry := range entries {
+			if !entry.IsDir() && strings.HasSuffix(entry.Name(), ".sql") {
 				return true
 			}
 		}

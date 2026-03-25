@@ -150,6 +150,7 @@ inari index --watch                      # auto re-index on file changes
 | C                | Ready  | Functions, structs, enums, typedefs, #include imports.                |
 | C++              | Ready  | Classes, namespaces, inheritance, member/scoped calls, new.           |
 | Protocol Buffers | Ready  | Messages, enums, services, rpc methods, field/type references.        |
+| SQL              | Ready  | Tables, views, functions, column definitions, FK/JOIN references.     |
 
 Each language is a plugin: a tree-sitter grammar and two `.scm` query files (`symbols.scm`, `edges.scm`). Adding a new language requires ~200 lines of Go.
 

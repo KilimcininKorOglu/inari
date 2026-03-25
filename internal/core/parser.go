@@ -133,6 +133,8 @@ func (cp *CodeParser) DetectLanguage(path string) (languages.SupportedLanguage, 
 		return languages.Cpp, nil
 	case "proto":
 		return languages.Protobuf, nil
+	case "sql":
+		return languages.SQL, nil
 	default:
 		return 0, fmt.Errorf("unsupported file extension: .%s", ext)
 	}

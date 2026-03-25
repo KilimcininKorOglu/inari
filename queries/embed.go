@@ -129,3 +129,11 @@ var ProtobufSymbolsQuery string
 
 //go:embed protobuf/edges.scm
 var ProtobufEdgesQuery string
+
+// SQL queries
+
+//go:embed sql/symbols.scm
+var SQLSymbolsQuery string
+
+//go:embed sql/edges.scm
+var SQLEdgesQuery string

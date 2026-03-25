@@ -57,6 +57,7 @@ func TestRefsAcrossLanguages(t *testing.T) {
 		{"c-simple", "process_payment"},
 		{"cpp-simple", "processPayment"},
 		{"protobuf-simple", "ProcessPayment"},
+		{"sql-simple", "users"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.fixture, func(t *testing.T) {
@@ -87,6 +88,7 @@ func TestMapAcrossLanguages(t *testing.T) {
 		{"c-simple", "process_payment"},
 		{"cpp-simple", "PaymentService"},
 		{"protobuf-simple", "PaymentRequest"},
+		{"sql-simple", "payments"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.fixture, func(t *testing.T) {
