@@ -51,6 +51,7 @@ func TestRefsAcrossLanguages(t *testing.T) {
 		{"kotlin-simple", "processPayment"},
 		{"ruby-simple", "process_payment"},
 		{"php-simple", "processPayment"},
+		{"lua-simple", "processPayment"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.fixture, func(t *testing.T) {
@@ -75,6 +76,7 @@ func TestMapAcrossLanguages(t *testing.T) {
 		{"kotlin-simple", "PaymentService"},
 		{"ruby-simple", "PaymentService"},
 		{"php-simple", "PaymentService"},
+		{"lua-simple", "processPayment"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.fixture, func(t *testing.T) {

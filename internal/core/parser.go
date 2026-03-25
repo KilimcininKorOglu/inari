@@ -121,6 +121,8 @@ func (cp *CodeParser) DetectLanguage(path string) (languages.SupportedLanguage, 
 		return languages.Ruby, nil
 	case "php":
 		return languages.Php, nil
+	case "lua":
+		return languages.Lua, nil
 	default:
 		return 0, fmt.Errorf("unsupported file extension: .%s", ext)
 	}

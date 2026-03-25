@@ -36,6 +36,8 @@ const (
 	Ruby
 	// Php represents .php files.
 	Php
+	// Lua represents .lua files.
+	Lua
 )
 
 // AsStr returns the language name as a lowercase identifier string.
@@ -59,6 +61,8 @@ func (l SupportedLanguage) AsStr() string {
 		return "ruby"
 	case Php:
 		return "php"
+	case Lua:
+		return "lua"
 	default:
 		return "unknown"
 	}
@@ -85,6 +89,8 @@ func (l SupportedLanguage) String() string {
 		return "Ruby"
 	case Php:
 		return "PHP"
+	case Lua:
+		return "Lua"
 	default:
 		return fmt.Sprintf("SupportedLanguage(%d)", int(l))
 	}

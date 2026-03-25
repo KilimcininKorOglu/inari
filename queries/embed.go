@@ -81,3 +81,11 @@ var PhpSymbolsQuery string
 
 //go:embed php/edges.scm
 var PhpEdgesQuery string
+
+// Lua queries
+
+//go:embed lua/symbols.scm
+var LuaSymbolsQuery string
+
+//go:embed lua/edges.scm
+var LuaEdgesQuery string

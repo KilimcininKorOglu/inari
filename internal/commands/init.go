@@ -166,6 +166,15 @@ func detectLanguages(projectRoot string) []string {
 		languages = append(languages, "php")
 	}
 
+	// Lua detection.
+	if fileExists(filepath.Join(projectRoot, ".luarc.json")) ||
+		fileExists(filepath.Join(projectRoot, ".luarc.jsonc")) ||
+		fileExists(filepath.Join(projectRoot, "init.lua")) ||
+		fileExists(filepath.Join(projectRoot, "conf.lua")) ||
+		hasLuarockFiles(projectRoot) {
+		languages = append(languages, "lua")
+	}
+
 	return languages
 }
 
@@ -181,6 +190,26 @@ func hasCSharpFiles(projectRoot string) bool {
 		}
 		name := entry.Name()
 		if strings.HasSuffix(name, ".csproj") || strings.HasSuffix(name, ".sln") {
+			return true
+		}
+	}
+	return false
+}
+
+// hasLuarockFiles checks if the project root contains .rockspec files or a .luarocks directory.
+func hasLuarockFiles(projectRoot string) bool {
+	entries, err := os.ReadDir(projectRoot)
+	if err != nil {
+		return false
+	}
+	for _, entry := range entries {
+		if entry.IsDir() {
+			if entry.Name() == ".luarocks" {
+				return true
+			}
+			continue
+		}
+		if strings.HasSuffix(entry.Name(), ".rockspec") {
 			return true
 		}
 	}
@@ -217,6 +246,8 @@ func languageDisplayName(lang string) string {
 		return "Ruby"
 	case "php":
 		return "PHP"
+	case "lua":
+		return "Lua"
 	default:
 		return lang
 	}
