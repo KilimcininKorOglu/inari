@@ -21,4 +21,3 @@
 ## Later
 
 - [ ] Ruby language support
-- [ ] CI/CD integration for impact analysis on PRs
