@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-03-25
+
+### Added
+- Go language support with tree-sitter parsing, exported/unexported detection, receiver types, and composite literal instantiation
+- Custom domain landing page at inari.hermestech.uk
+- ROADMAP.md as standalone file
+- Multi-agent integration table in README (Claude Code, Cursor, Copilot, Gemini CLI, Codex, Aider, Windsurf)
+
+### Changed
+- README rewritten with professional structure, categorised command tables, and live CI badge
+- Landing page copy updated to developer-focused messaging
+- CLAUDE.md.snippet expanded with `similar` and `source` commands
+
+### Fixed
+- Clipboard copy button now works on Firefox and non-HTTPS contexts via execCommand fallback
+
 ## [1.0.0] - 2026-03-25
 
 ### Added
