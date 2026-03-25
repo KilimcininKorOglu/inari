@@ -260,14 +260,14 @@
       <div class="col-lg-10">
 
         <h1 class="display-3 fw-bold mb-4">
-          know before<br>you touch.
+          your agent reads<br>6,000 tokens.<br>it needs 180.
         </h1>
 
         <p class="lead text-body-secondary mb-2">
-          Code intelligence for LLM coding agents.
+          Local code intelligence that fits in a context window.
         </p>
         <p class="text-body-secondary mb-4 font-mono" style="font-size: 0.85rem;">
-          // no full file reads. no context bloat. just signal.
+          // tree-sitter AST &rarr; SQLite graph &rarr; one CLI call &rarr; structured signal.
         </p>
 
         <div class="d-flex align-items-center gap-2 flex-wrap mb-4 font-mono" style="font-size: 0.82rem;">
@@ -333,14 +333,14 @@
       <div class="row align-items-center g-5">
         <div class="col-lg-6">
           <p class="text-body-secondary text-uppercase small font-mono mb-2">The problem</p>
-          <h2 class="display-6 fw-bold mb-3">Agents read too much. They understand too little.</h2>
+          <h2 class="display-6 fw-bold mb-3">Your agent grep's. It cat's. It reads the whole file to find one function signature.</h2>
           <p class="text-body-secondary mb-3">
-            Without code intelligence, agents navigate by loading full source files.
-            A typical refactoring task burns 8,000-12,000 tokens on navigation before writing a single line.
+            Without structural context, every refactoring task starts with the agent blindly loading source files.
+            8,000-12,000 tokens burned on navigation before a single edit. That's your money evaporating into context windows.
           </p>
           <p class="text-body-secondary">
-            inari builds a local structural graph -- call hierarchies, type relationships,
-            dependency chains. Agents query exactly what they need. Source loads only when they're ready to edit.
+            inari parses your code with tree-sitter, stores the result in a local SQLite graph, and lets agents
+            query call hierarchies, type relationships, and dependency chains in ~200 tokens. No server. No API key. Just a binary.
           </p>
         </div>
         <div class="col-lg-6">
@@ -366,10 +366,10 @@
   <div class="container">
     <div class="reveal">
       <p class="text-body-secondary text-uppercase small font-mono mb-2">See it in action</p>
-      <h2 class="display-6 fw-bold mb-3">One command. Complete picture.</h2>
+      <h2 class="display-6 fw-bold mb-3">180 tokens. Class structure, caller counts, type signatures.</h2>
       <p class="text-body-secondary mb-4">
-        An agent runs <code class="text-accent">inari sketch</code> and knows class structure, caller counts,
-        and type signatures -- without reading a single source file.
+        <code class="text-accent">inari sketch PaymentService</code> returns everything an agent needs to make correct edits --
+        without reading a single source file. The agent knows who calls what, what depends on what, and what's internal.
       </p>
     </div>
 
@@ -491,8 +491,8 @@
   <div class="container">
     <div class="reveal">
       <p class="text-body-secondary text-uppercase small font-mono mb-2">Command reference</p>
-      <h2 class="display-6 fw-bold mb-3">Every command has a purpose.</h2>
-      <p class="text-body-secondary mb-5">Designed for agents. Terse, labelled, consistent. Every output is structured for immediate action.</p>
+      <h2 class="display-6 fw-bold mb-3">18 commands. Each one replaces a dozen file reads.</h2>
+      <p class="text-body-secondary mb-5">Every output is structured for LLM consumption -- labelled fields, consistent separators, <code class="text-accent">--json</code> on everything. No parsing needed.</p>
     </div>
 
     <div class="row g-4 reveal" style="transition-delay:0.1s">
@@ -638,8 +638,8 @@
   <div class="container">
     <div class="reveal">
       <p class="text-body-secondary text-uppercase small font-mono mb-2">Setup</p>
-      <h2 class="display-6 fw-bold mb-3">Zero infrastructure. Three steps.</h2>
-      <p class="text-body-secondary mb-5">Everything lives in <code class="text-accent">.inari/</code> in your project root. No server, no docker, no API key required.</p>
+      <h2 class="display-6 fw-bold mb-3">go install. init. index. Done.</h2>
+      <p class="text-body-secondary mb-5">Everything lives in <code class="text-accent">.inari/</code> -- a SQLite DB and a TOML config. No daemon, no Docker, no cloud dependency. Gitignore it and forget it.</p>
     </div>
 
     <div class="row g-5">
@@ -668,8 +668,8 @@
               <span class="badge rounded-circle bg-body-tertiary text-accent font-mono fs-6 d-flex align-items-center justify-content-center" style="width:36px;height:36px;">3</span>
             </div>
             <div>
-              <h6 class="mb-1">Add to CLAUDE.md</h6>
-              <span class="text-body-secondary" style="font-size: 0.85rem;">Paste the snippet on the right. Done.</span>
+              <h6 class="mb-1">Add to your agent's config</h6>
+              <span class="text-body-secondary" style="font-size: 0.85rem;">CLAUDE.md, .cursorrules, copilot-instructions.md -- paste the snippet. Agents use it automatically.</span>
             </div>
           </div>
         </div>
@@ -711,8 +711,8 @@
   <div class="container">
     <div class="reveal">
       <p class="text-body-secondary text-uppercase small font-mono mb-2">Scale up</p>
-      <h2 class="display-6 fw-bold mb-3">Workspaces. One command, every project.</h2>
-      <p class="text-body-secondary mb-5">Monorepos, multi-repo setups, polyglot stacks -- inari queries across all your projects as one unit. Each project keeps its own index. One query searches them all.</p>
+      <h2 class="display-6 fw-bold mb-3">Monorepo? Polyglot? Both?</h2>
+      <p class="text-body-secondary mb-5">Workspaces federate queries across independent project graphs. Your TypeScript frontend, Rust backend, and Python ML service -- one <code class="text-accent">--workspace</code> flag queries them all. Each keeps its own .inari/ index.</p>
     </div>
 
     <div class="row g-4">
@@ -790,8 +790,8 @@
   <div class="container">
     <div class="reveal">
       <p class="text-body-secondary text-uppercase small font-mono mb-2">Language support</p>
-      <h2 class="display-6 fw-bold mb-3">Your stack, covered.</h2>
-      <p class="text-body-secondary mb-4">TypeScript, C#, Python, and Rust are production-ready. Go and Java are next.</p>
+      <h2 class="display-6 fw-bold mb-3">tree-sitter does the parsing. You add a .scm file.</h2>
+      <p class="text-body-secondary mb-4">Each language is a plugin: grammar + two query files (symbols.scm, edges.scm). TypeScript, C#, Python, and Rust ship built-in. Adding a new language is ~200 lines of Go.</p>
 
       <div class="row g-3">
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
@@ -851,7 +851,7 @@
 <footer class="bg-dark border-top py-5">
   <div class="container text-center">
     <a href="#hero" class="text-decoration-none font-mono fw-bold fs-5" style="color: var(--accent);">[inari]</a>
-    <p class="text-body-secondary mt-2 mb-4">Code intelligence for LLM coding agents.</p>
+    <p class="text-body-secondary mt-2 mb-4">Structural code intelligence. Local. Fast. Agent-native.</p>
     <div class="d-flex justify-content-center gap-4 flex-wrap mb-4">
       <a href="https://github.com/KilimcininKorOglu/inari" class="text-body-secondary text-decoration-none">
         <i class="bi bi-github me-1"></i> GitHub
