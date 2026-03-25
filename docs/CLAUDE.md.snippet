@@ -20,6 +20,8 @@ Start with `inari map` for a repo overview, then `inari sketch` for specific sym
 - `inari deps <symbol> [--depth 1-3]` -- what does this depend on?
 - `inari rdeps <symbol> [--depth 1-3]` -- what depends on this?
 - `inari trace <symbol>` -- call paths from entry points to target
+- `inari similar <symbol>` -- find structurally similar symbols
+- `inari source <symbol>` -- fetch full source code of a symbol
 
 **Keeping the index fresh:**
 - `inari index` -- incremental re-index after edits (< 1s for a few files)

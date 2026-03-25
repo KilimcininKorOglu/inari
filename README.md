@@ -20,6 +20,7 @@
 [![Build](https://img.shields.io/badge/build-passing-22863a)](https://github.com/KilimcininKorOglu/inari/actions)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-lightgrey)](#installation)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Website](https://img.shields.io/badge/website-inari.hermestech.uk-e8843c)](https://inari.hermestech.uk)
 
 ---
 
@@ -310,6 +311,8 @@ Start with `inari map` for a repo overview, then `inari sketch` for specific sym
 **Understanding flow:**
 - `inari deps <symbol>` -- what does this depend on?
 - `inari trace <symbol>` -- call paths from entry points
+- `inari similar <symbol>` -- find structurally similar symbols
+- `inari source <symbol>` -- fetch full source code
 
 Always `inari sketch` before reading full source.
 ```
