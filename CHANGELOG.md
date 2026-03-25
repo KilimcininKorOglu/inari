@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-03-25
+
+### Added
+- Java language support with full Java 8-21 coverage (classes, interfaces, enums, records, annotations, extends/implements)
+- Kotlin language support with data/sealed/inner class modifiers, suspend/inline functions, and delegation specifiers
+
 ## [1.1.1] - 2026-03-25
 
 ### Added
