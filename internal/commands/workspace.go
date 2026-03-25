@@ -119,15 +119,29 @@ func runWorkspaceInit(wsName string, projectRoot string) error {
 		return fmt.Errorf("workspace already initialized. Edit inari-workspace.toml directly")
 	}
 
-	// Discover projects by walking subdirectories (max depth 3).
+	// Check if the workspace root itself is an Inari project.
 	var members []config.MemberInfo
+	rootInariDir := filepath.Join(projectRoot, ".inari")
+	rootConfigPath := filepath.Join(rootInariDir, "config.toml")
+	if _, err := os.Stat(rootConfigPath); err == nil {
+		rootName := filepath.Base(projectRoot)
+		if cfg, loadErr := config.LoadProjectConfig(rootInariDir); loadErr == nil && cfg.Project.Name != "" {
+			rootName = cfg.Project.Name
+		}
+		members = append(members, config.MemberInfo{
+			Path: ".",
+			Name: rootName,
+		})
+	}
+
+	// Discover projects by walking subdirectories (max depth 3).
 	if err := discoverProjects(projectRoot, projectRoot, 0, 3, &members); err != nil {
 		return err
 	}
 
 	if len(members) == 0 {
 		return fmt.Errorf(
-			"no Inari projects found in subdirectories.\n" +
+			"no Inari projects found.\n" +
 				"Run 'inari init' in each project directory first, then retry",
 		)
 	}

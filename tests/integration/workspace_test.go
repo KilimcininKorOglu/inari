@@ -195,6 +195,52 @@ func TestWorkspaceInitNoProjects(t *testing.T) {
 	}
 }
 
+// TestWorkspaceInitRootProject verifies that `inari workspace init` discovers
+// the root project (path=".") when the workspace root itself is an Inari project.
+func TestWorkspaceInitRootProject(t *testing.T) {
+	dir := t.TempDir()
+
+	// Root is itself an Inari project.
+	initInariProject(t, dir, "backend")
+
+	// Also create a subdirectory project.
+	webDir := filepath.Join(dir, "web")
+	if err := os.MkdirAll(webDir, 0755); err != nil {
+		t.Fatalf("failed to create web dir: %v", err)
+	}
+	initInariProject(t, webDir, "web")
+
+	_, stderr := runInari(t, dir, "workspace", "init")
+	assertContains(t, stderr, "Found 2 projects")
+
+	content, err := os.ReadFile(filepath.Join(dir, "inari-workspace.toml"))
+	if err != nil {
+		t.Fatalf("manifest should exist: %v", err)
+	}
+	manifest := string(content)
+	assertContains(t, manifest, "backend")
+	assertContains(t, manifest, "web")
+	assertContains(t, manifest, `path = "."`)
+}
+
+// TestWorkspaceInitRootOnly verifies that `inari workspace init` discovers
+// the root project even when no subdirectory projects exist.
+func TestWorkspaceInitRootOnly(t *testing.T) {
+	dir := t.TempDir()
+	initInariProject(t, dir, "solo-project")
+
+	_, stderr := runInari(t, dir, "workspace", "init")
+	assertContains(t, stderr, "Found 1 project")
+
+	content, err := os.ReadFile(filepath.Join(dir, "inari-workspace.toml"))
+	if err != nil {
+		t.Fatalf("manifest should exist: %v", err)
+	}
+	manifest := string(content)
+	assertContains(t, manifest, "solo-project")
+	assertContains(t, manifest, `path = "."`)
+}
+
 // TestWorkspaceListJson verifies that `inari workspace list --json` returns
 // valid JSON with expected fields.
 func TestWorkspaceListJson(t *testing.T) {
