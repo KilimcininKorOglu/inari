@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-03-25
+
+### Added
+- Ruby language support with module kind, mixin edges (include/extend/prepend), attr macros as properties, and singleton methods
+- PHP language support with namespace as module, trait as interface, static calls (::), visibility/abstract/final/readonly modifiers
+- Lua language support with table-based OOP, require imports, colon-syntax and dot-syntax method calls
+
 ## [1.2.0] - 2026-03-25
 
 ### Added
