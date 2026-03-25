@@ -147,6 +147,7 @@ inari index --watch                      # auto re-index on file changes
 | Lua        | Ready  | Table-based OOP, require imports, colon-syntax method calls.         |
 | Swift      | Ready  | Protocol as interface, class/struct/enum, navigation expressions.    |
 | Bash       | Ready  | Function definitions, source/. imports, command call detection.      |
+| C          | Ready  | Functions, structs, enums, typedefs, #include imports.               |
 
 Each language is a plugin: a tree-sitter grammar and two `.scm` query files (`symbols.scm`, `edges.scm`). Adding a new language requires ~200 lines of Go.
 

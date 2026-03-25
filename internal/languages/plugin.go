@@ -42,6 +42,8 @@ const (
 	Swift
 	// Bash represents .sh and .bash files.
 	Bash
+	// CLang represents .c and .h files.
+	CLang
 )
 
 // AsStr returns the language name as a lowercase identifier string.
@@ -71,6 +73,8 @@ func (l SupportedLanguage) AsStr() string {
 		return "swift"
 	case Bash:
 		return "bash"
+	case CLang:
+		return "c"
 	default:
 		return "unknown"
 	}
@@ -103,6 +107,8 @@ func (l SupportedLanguage) String() string {
 		return "Swift"
 	case Bash:
 		return "Bash"
+	case CLang:
+		return "C"
 	default:
 		return fmt.Sprintf("SupportedLanguage(%d)", int(l))
 	}

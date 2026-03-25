@@ -172,6 +172,11 @@ func detectLanguages(projectRoot string) []string {
 		languages = append(languages, "swift")
 	}
 
+	// C detection.
+	if hasCSourceFiles(projectRoot) {
+		languages = append(languages, "c")
+	}
+
 	// Bash/Shell detection.
 	if hasBashFiles(projectRoot) {
 		languages = append(languages, "bash")
@@ -202,6 +207,46 @@ func hasCSharpFiles(projectRoot string) bool {
 		name := entry.Name()
 		if strings.HasSuffix(name, ".csproj") || strings.HasSuffix(name, ".sln") {
 			return true
+		}
+	}
+	return false
+}
+
+// hasCSourceFiles checks if the project root contains .c source files.
+func hasCSourceFiles(projectRoot string) bool {
+	entries, err := os.ReadDir(projectRoot)
+	if err != nil {
+		return false
+	}
+	// Check for Makefile + .c files or CMakeLists.txt.
+	if fileExists(filepath.Join(projectRoot, "CMakeLists.txt")) {
+		return true
+	}
+	hasMakefile := false
+	for _, entry := range entries {
+		if entry.IsDir() {
+			continue
+		}
+		name := entry.Name()
+		if name == "Makefile" || name == "makefile" {
+			hasMakefile = true
+		}
+		if strings.HasSuffix(name, ".c") {
+			if hasMakefile {
+				return true
+			}
+		}
+	}
+	// If there's a src/ dir with .c files, detect.
+	srcDir := filepath.Join(projectRoot, "src")
+	if info, err := os.Stat(srcDir); err == nil && info.IsDir() {
+		srcEntries, err := os.ReadDir(srcDir)
+		if err == nil {
+			for _, entry := range srcEntries {
+				if strings.HasSuffix(entry.Name(), ".c") {
+					return true
+				}
+			}
 		}
 	}
 	return false
@@ -298,6 +343,8 @@ func languageDisplayName(lang string) string {
 		return "Swift"
 	case "bash":
 		return "Bash"
+	case "c":
+		return "C"
 	default:
 		return lang
 	}

@@ -105,3 +105,11 @@ var BashSymbolsQuery string
 
 //go:embed bash/edges.scm
 var BashEdgesQuery string
+
+// C queries
+
+//go:embed c/symbols.scm
+var CSymbolsQuery string
+
+//go:embed c/edges.scm
+var CEdgesQuery string
