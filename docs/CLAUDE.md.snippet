@@ -29,4 +29,11 @@ Start with `inari map` for a repo overview, then `inari sketch` for specific sym
 - `inari update` -- self-update to latest version from GitHub Releases
 - Line numbers reflect the last index run. Re-index if they look wrong.
 
+**Multi-project workspaces:**
+- `inari workspace init` -- discover projects and create `inari-workspace.toml`
+- `inari workspace index` -- index all workspace members
+- `inari workspace list` -- list members with status and symbol counts
+- Any command with `--workspace` -- fan out queries across all members
+- `--project <name>` -- target a specific workspace member by name
+
 Always `inari sketch` before reading full source. Only read source when ready to edit.
