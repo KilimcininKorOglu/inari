@@ -113,6 +113,8 @@ func (cp *CodeParser) DetectLanguage(path string) (languages.SupportedLanguage, 
 		return languages.Go, nil
 	case "java":
 		return languages.Java, nil
+	case "kt":
+		return languages.Kotlin, nil
 	case "rs":
 		return languages.Rust, nil
 	default:

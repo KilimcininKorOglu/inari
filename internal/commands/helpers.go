@@ -12,6 +12,7 @@ var sourceExtensions = []string{
 	".py",   // Python
 	".go",   // Go
 	".java", // Java
+	".kt",   // Kotlin
 }
 
 // LooksLikeFilePath returns true if the input looks like a file path

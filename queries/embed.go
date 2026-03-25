@@ -57,3 +57,11 @@ var JavaSymbolsQuery string
 
 //go:embed java/edges.scm
 var JavaEdgesQuery string
+
+// Kotlin queries
+
+//go:embed kotlin/symbols.scm
+var KotlinSymbolsQuery string
+
+//go:embed kotlin/edges.scm
+var KotlinEdgesQuery string

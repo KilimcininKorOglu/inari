@@ -81,6 +81,7 @@ func NewIndexer() (*Indexer, error) {
 		&languages.RustPlugin{},
 		&languages.GoPlugin{},
 		&languages.JavaPlugin{},
+		&languages.KotlinPlugin{},
 	}
 
 	for _, plugin := range plugins {

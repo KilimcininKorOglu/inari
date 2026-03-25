@@ -28,6 +28,8 @@ const (
 	Go
 	// Java represents .java files.
 	Java
+	// Kotlin represents .kt files.
+	Kotlin
 	// Rust represents .rs files.
 	Rust
 )
@@ -45,6 +47,8 @@ func (l SupportedLanguage) AsStr() string {
 		return "go"
 	case Java:
 		return "java"
+	case Kotlin:
+		return "kotlin"
 	case Rust:
 		return "rust"
 	default:
@@ -65,6 +69,8 @@ func (l SupportedLanguage) String() string {
 		return "Go"
 	case Java:
 		return "Java"
+	case Kotlin:
+		return "Kotlin"
 	case Rust:
 		return "Rust"
 	default:

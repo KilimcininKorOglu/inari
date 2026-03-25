@@ -147,6 +147,12 @@ func detectLanguages(projectRoot string) []string {
 		languages = append(languages, "java")
 	}
 
+	// Kotlin detection (Kotlin DSL build files).
+	if fileExists(filepath.Join(projectRoot, "build.gradle.kts")) ||
+		fileExists(filepath.Join(projectRoot, "settings.gradle.kts")) {
+		languages = append(languages, "kotlin")
+	}
+
 	return languages
 }
 
@@ -190,6 +196,8 @@ func languageDisplayName(lang string) string {
 		return "Go"
 	case "java":
 		return "Java"
+	case "kotlin":
+		return "Kotlin"
 	case "rust":
 		return "Rust"
 	default:

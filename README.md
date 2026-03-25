@@ -141,6 +141,7 @@ inari index --watch                      # auto re-index on file changes
 | Rust       | Ready   | Impl block association, visibility modifiers (`pub`, `pub(crate)`).  |
 | Go         | Ready   | Exported/unexported detection, receiver types, composite literals.   |
 | Java       | Ready   | Access modifiers, abstract/final/synchronized, extends/implements.   |
+| Kotlin     | Ready   | Visibility modifiers, data/sealed/inner classes, suspend/inline.     |
 
 Each language is a plugin: a tree-sitter grammar and two `.scm` query files (`symbols.scm`, `edges.scm`). Adding a new language requires ~200 lines of Go.
 
