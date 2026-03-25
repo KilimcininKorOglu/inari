@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2026-03-25
+
+### Added
+- Self-update command (`inari update`) with in-place binary replacement from GitHub Releases
+- Background update check with 24h cooldown and `--no-update-check` flag
+- PowerShell install script (`install.ps1`) for Windows
+- CLI parameter update rule enforced across all documentation
+
+### Changed
+- Install scripts served from custom domain (inari.hermestech.uk)
+- README updated with dual install commands (bash + PowerShell)
+- Landing page shows both bash and PowerShell install options
+
+### Fixed
+- Install script updated to match Go release binary naming (GOOS-GOARCH)
+
 ## [1.1.0] - 2026-03-25
 
 ### Added
