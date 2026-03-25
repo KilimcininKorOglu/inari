@@ -4,7 +4,7 @@ Structural code intelligence for LLM coding agents.
 
 [![Go](https://img.shields.io/badge/built_with-Go-00ADD8?logo=go&logoColor=white)](https://go.dev)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-v1.3.4-blue.svg)](https://github.com/KilimcininKorOglu/inari/releases)
+[![Version](https://img.shields.io/badge/version-v1.3.5-blue.svg)](https://github.com/KilimcininKorOglu/inari/releases)
 [![CI](https://github.com/KilimcininKorOglu/inari/actions/workflows/ci.yml/badge.svg)](https://github.com/KilimcininKorOglu/inari/actions/workflows/ci.yml)
 [![Website](https://img.shields.io/badge/website-inari.hermestech.uk-e8843c)](https://inari.hermestech.uk)
 
@@ -58,7 +58,7 @@ Verify:
 
 ```bash
 inari --version
-# inari 1.3.4
+# inari 1.3.5
 ```
 
 ---

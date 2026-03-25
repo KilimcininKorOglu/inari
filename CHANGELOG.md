@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.5] - 2026-03-25
+
+### Fixed
+- Workspace init now discovers the root project when it is both workspace root and an Inari project
+
 ## [1.3.4] - 2026-03-25
 
 ### Added
