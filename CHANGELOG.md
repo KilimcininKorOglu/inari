@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.3] - 2026-03-25
+
+### Added
+- C language support with functions, structs, enums, typedefs, and #include imports
+
 ## [1.3.2] - 2026-03-25
 
 ### Added

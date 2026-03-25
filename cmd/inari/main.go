@@ -13,7 +13,7 @@ import (
 )
 
 // version is set at build time via -ldflags.
-var version = "1.3.2"
+var version = "1.3.3"
 
 func main() {
 	commands.Version = version
