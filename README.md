@@ -47,6 +47,11 @@ go install github.com/KilimcininKorOglu/inari/cmd/inari@latest
 curl -fsSL https://raw.githubusercontent.com/KilimcininKorOglu/inari/main/install.sh | sh
 ```
 
+```powershell
+# Option 3: PowerShell (Windows)
+irm https://raw.githubusercontent.com/KilimcininKorOglu/inari/main/install.ps1 | iex
+```
+
 Verify:
 
 ```bash
