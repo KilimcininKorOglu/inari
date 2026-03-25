@@ -80,6 +80,7 @@ func NewIndexer() (*Indexer, error) {
 		&languages.PythonPlugin{},
 		&languages.RustPlugin{},
 		&languages.GoPlugin{},
+		&languages.JavaPlugin{},
 	}
 
 	for _, plugin := range plugins {

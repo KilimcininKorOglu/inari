@@ -49,3 +49,11 @@ var GoSymbolsQuery string
 
 //go:embed go/edges.scm
 var GoEdgesQuery string
+
+// Java queries
+
+//go:embed java/symbols.scm
+var JavaSymbolsQuery string
+
+//go:embed java/edges.scm
+var JavaEdgesQuery string

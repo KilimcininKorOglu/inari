@@ -140,6 +140,13 @@ func detectLanguages(projectRoot string) []string {
 		languages = append(languages, "go")
 	}
 
+	// Java detection (Maven or Gradle).
+	if fileExists(filepath.Join(projectRoot, "pom.xml")) ||
+		fileExists(filepath.Join(projectRoot, "build.gradle")) ||
+		fileExists(filepath.Join(projectRoot, "build.gradle.kts")) {
+		languages = append(languages, "java")
+	}
+
 	return languages
 }
 

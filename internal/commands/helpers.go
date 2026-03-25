@@ -10,8 +10,8 @@ var sourceExtensions = []string{
 	".cs",   // C#
 	".rs",   // Rust
 	".py",   // Python
-	".go",   // Go (planned)
-	".java", // Java (planned)
+	".go",   // Go
+	".java", // Java
 }
 
 // LooksLikeFilePath returns true if the input looks like a file path
