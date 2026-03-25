@@ -80,64 +80,64 @@ inari index --watch                      # auto re-index on file changes
 
 ### Orientation
 
-| Command             | Description                                                                   |
-|---------------------|-------------------------------------------------------------------------------|
-| `inari map`         | Full repository overview: entry points, core symbols, architecture layers.    |
-| `inari entrypoints` | List API controllers, workers, and event handlers.                           |
-| `inari status`      | Index health: symbol count, file count, freshness, search availability.      |
+| Command             | Description                                                                |
+|---------------------|----------------------------------------------------------------------------|
+| `inari map`         | Full repository overview: entry points, core symbols, architecture layers. |
+| `inari entrypoints` | List API controllers, workers, and event handlers.                         |
+| `inari status`      | Index health: symbol count, file count, freshness, search availability.    |
 
 ### Exploration
 
-| Command                                  | Description                                                     |
-|------------------------------------------|-----------------------------------------------------------------|
-| `inari sketch <symbol>`                  | Compressed structural overview with caller counts and deps.     |
-| `inari refs <symbol> [--kind K]`         | All references grouped by kind (calls, imports, extends, ...).  |
-| `inari callers <symbol> [--depth N]`     | Direct and transitive callers. Blast radius analysis.           |
-| `inari deps <symbol> [--depth 1-3]`      | Forward dependencies: what does this symbol depend on?          |
-| `inari rdeps <symbol> [--depth 1-3]`     | Reverse dependencies: what depends on this symbol?              |
-| `inari trace <symbol>`                   | Call paths from entry points to the target symbol.              |
-| `inari find "<query>" [--kind K]`        | Full-text search with BM25 ranking. Search by intent.           |
-| `inari similar <symbol>`                 | Find structurally similar symbols.                              |
-| `inari source <symbol>`                  | Fetch full source code of a symbol.                             |
+| Command                              | Description                                                    |
+|--------------------------------------|----------------------------------------------------------------|
+| `inari sketch <symbol>`              | Compressed structural overview with caller counts and deps.    |
+| `inari refs <symbol> [--kind K]`     | All references grouped by kind (calls, imports, extends, ...). |
+| `inari callers <symbol> [--depth N]` | Direct and transitive callers. Blast radius analysis.          |
+| `inari deps <symbol> [--depth 1-3]`  | Forward dependencies: what does this symbol depend on?         |
+| `inari rdeps <symbol> [--depth 1-3]` | Reverse dependencies: what depends on this symbol?             |
+| `inari trace <symbol>`               | Call paths from entry points to the target symbol.             |
+| `inari find "<query>" [--kind K]`    | Full-text search with BM25 ranking. Search by intent.          |
+| `inari similar <symbol>`             | Find structurally similar symbols.                             |
+| `inari source <symbol>`              | Fetch full source code of a symbol.                            |
 
 ### Index management
 
-| Command                   | Description                                                        |
-|---------------------------|--------------------------------------------------------------------|
-| `inari init`              | Initialise Inari for a project. Detects languages automatically.   |
-| `inari index [--full]`    | Build or refresh the index. Incremental by default.                |
-| `inari index --watch`     | Monitor files and auto re-index with 300ms debounce.               |
+| Command                | Description                                                      |
+|------------------------|------------------------------------------------------------------|
+| `inari init`           | Initialise Inari for a project. Detects languages automatically. |
+| `inari index [--full]` | Build or refresh the index. Incremental by default.              |
+| `inari index --watch`  | Monitor files and auto re-index with 300ms debounce.             |
 
 ### Workspaces
 
-| Command                  | Description                                                         |
-|--------------------------|---------------------------------------------------------------------|
-| `inari workspace init`   | Discover projects and create `inari-workspace.toml`.                |
-| `inari workspace index`  | Index all workspace members.                                        |
-| `inari workspace list`   | List members with status and symbol counts.                         |
-| Any command `--workspace` | Fan out queries across all members.                                |
+| Command                   | Description                                          |
+|---------------------------|------------------------------------------------------|
+| `inari workspace init`    | Discover projects and create `inari-workspace.toml`. |
+| `inari workspace index`   | Index all workspace members.                         |
+| `inari workspace list`    | List members with status and symbol counts.          |
+| Any command `--workspace` | Fan out queries across all members.                  |
 
 ### Global flags
 
-| Flag          | Description                                                  |
-|---------------|--------------------------------------------------------------|
-| `--json`      | Structured JSON output on all commands.                      |
-| `--workspace` | Query across all workspace members.                          |
-| `--project`   | Target a specific workspace member by name.                  |
-| `--verbose`   | Debug output to stderr.                                      |
+| Flag          | Description                                 |
+|---------------|---------------------------------------------|
+| `--json`      | Structured JSON output on all commands.     |
+| `--workspace` | Query across all workspace members.         |
+| `--project`   | Target a specific workspace member by name. |
+| `--verbose`   | Debug output to stderr.                     |
 
 ---
 
 ## Supported languages
 
-| Language   | Status | Highlights                                                              |
-|------------|--------|-------------------------------------------------------------------------|
-| TypeScript | Ready  | Full edge detection, async/static/abstract modifiers, JSX support.      |
-| C#         | Ready  | Partial class merging, visibility modifiers, async/virtual/override.    |
-| Python     | Ready  | Decorator extraction, docstring capture, classmethod/staticmethod.      |
-| Rust       | Ready  | Impl block association, visibility modifiers (`pub`, `pub(crate)`).     |
-| Go         | Ready  | Exported/unexported detection, receiver types, composite literals.      |
-| Java       | Planned |                                                                        |
+| Language   | Status  | Highlights                                                           |
+|------------|---------|----------------------------------------------------------------------|
+| TypeScript | Ready   | Full edge detection, async/static/abstract modifiers, JSX support.   |
+| C#         | Ready   | Partial class merging, visibility modifiers, async/virtual/override. |
+| Python     | Ready   | Decorator extraction, docstring capture, classmethod/staticmethod.   |
+| Rust       | Ready   | Impl block association, visibility modifiers (`pub`, `pub(crate)`).  |
+| Go         | Ready   | Exported/unexported detection, receiver types, composite literals.   |
+| Java       | Planned |                                                                      |
 
 Each language is a plugin: a tree-sitter grammar and two `.scm` query files (`symbols.scm`, `edges.scm`). Adding a new language requires ~200 lines of Go.
 
@@ -187,28 +187,50 @@ max_depth = 3
 
 Inari works with any AI coding agent that can execute shell commands. Add the snippet below to your agent's instruction file.
 
-| Agent              | Instruction file                         |
-|--------------------|------------------------------------------|
-| Claude Code        | `CLAUDE.md`                              |
-| Cursor             | `.cursor/rules/*.mdc` or `.cursorrules`  |
-| GitHub Copilot     | `.github/copilot-instructions.md`        |
-| Gemini CLI         | `GEMINI.md`                              |
-| Codex              | `AGENTS.md`                              |
-| Aider              | `.aider.conf.yml`                        |
-| Windsurf / Codeium | `.windsurfrules`                         |
+| Agent              | Instruction file                        |
+|--------------------|-----------------------------------------|
+| Claude Code        | `CLAUDE.md`                             |
+| Cursor             | `.cursor/rules/*.mdc` or `.cursorrules` |
+| GitHub Copilot     | `.github/copilot-instructions.md`       |
+| Gemini CLI         | `GEMINI.md`                             |
+| Codex              | `AGENTS.md`                             |
+| Aider              | `.aider.conf.yml`                       |
+| Windsurf / Codeium | `.windsurfrules`                        |
 
 The full snippet is available at [`docs/CLAUDE.md.snippet`](docs/CLAUDE.md.snippet).
 
 ```markdown
 ## Code Navigation
 
-This project uses Inari for structural code intelligence.
+This project uses [Inari](https://github.com/KilimcininKorOglu/inari) for structural code intelligence.
+Start with `inari map` for a repo overview, then `inari sketch` for specific symbols.
 
-**Before editing:** `inari sketch <symbol>` | `inari refs <symbol>` | `inari callers <symbol> --depth N`
-**Finding code:** `inari find "<query>"`
-**Understanding flow:** `inari deps <symbol>` | `inari trace <symbol>` | `inari similar <symbol>`
+**Orientation:**
+- `inari map` -- full repo overview: entry points, core symbols, architecture (~500-1000 tokens)
+- `inari entrypoints` -- list API controllers, workers, event handlers
+- `inari status` -- check index health and freshness
 
-Always sketch before reading source. Re-index after edits: `inari index`
+**Before editing a class or function:**
+- `inari sketch <symbol>` -- structural overview: methods, deps, modifiers (~200 tokens)
+- `inari refs <symbol> [--kind calls|imports|extends|implements|...]` -- all references with file + line
+- `inari callers <symbol> [--depth N]` -- direct and transitive callers for blast radius
+
+**Finding code:**
+- `inari find "<query>" [--kind function|class|method|interface]` -- full-text search by intent
+
+**Understanding dependencies and flow:**
+- `inari deps <symbol> [--depth 1-3]` -- what does this depend on?
+- `inari rdeps <symbol> [--depth 1-3]` -- what depends on this?
+- `inari trace <symbol>` -- call paths from entry points to target
+- `inari similar <symbol>` -- find structurally similar symbols
+- `inari source <symbol>` -- fetch full source code of a symbol
+
+**Keeping the index fresh:**
+- `inari index` -- incremental re-index after edits (< 1s for a few files)
+- `inari index --watch` -- auto re-index on file changes (runs in background)
+- Line numbers reflect the last index run. Re-index if they look wrong.
+
+Always `inari sketch` before reading full source. Only read source when ready to edit.
 ```
 
 ---
