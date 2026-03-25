@@ -40,16 +40,18 @@ fields:
 ## Installation
 
 ```bash
-# Option 1: go install
-go install github.com/KilimcininKorOglu/inari/cmd/inari@latest
-
-# Option 2: curl (Linux and macOS)
+# Linux and macOS
 curl -fsSL https://inari.hermestech.uk/install.sh | sh
 ```
 
 ```powershell
-# Option 3: PowerShell (Windows)
+# Windows (PowerShell)
 irm https://inari.hermestech.uk/install.ps1 | iex
+```
+
+```bash
+# Or via go install
+go install github.com/KilimcininKorOglu/inari/cmd/inari@latest
 ```
 
 Verify:

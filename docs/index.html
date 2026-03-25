@@ -272,7 +272,7 @@
 
         <div class="d-flex align-items-center gap-2 flex-wrap mb-4 font-mono" style="font-size: 0.82rem;">
           <span class="text-accent">$</span>
-          <code class="text-accent" style="cursor: pointer; background: none;" onclick="copyCmd(this)">go install github.com/KilimcininKorOglu/inari/cmd/inari@latest</code>
+          <code class="text-accent" style="cursor: pointer; background: none;" onclick="copyCmd(this)">curl -fsSL https://inari.hermestech.uk/install.sh | sh</code>
           <span class="input-cursor"></span>
           <button class="btn btn-link btn-sm p-0 text-secondary" onclick="copyCmd(this)">
             <i class="bi bi-clipboard"></i>
@@ -638,7 +638,7 @@
   <div class="container">
     <div class="reveal">
       <p class="text-body-secondary text-uppercase small font-mono mb-2">Setup</p>
-      <h2 class="display-6 fw-bold mb-3">go install. init. index. Done.</h2>
+      <h2 class="display-6 fw-bold mb-3">curl. init. index. Done.</h2>
       <p class="text-body-secondary mb-5">Everything lives in <code class="text-accent">.inari/</code> -- a SQLite DB and a TOML config. No daemon, no Docker, no cloud dependency. Gitignore it and forget it.</p>
     </div>
 
@@ -651,7 +651,7 @@
             </div>
             <div>
               <h6 class="mb-1">Install</h6>
-              <code class="text-body-secondary font-mono" style="font-size: 0.8rem;">$ go install github.com/KilimcininKorOglu/inari/cmd/inari@latest</code>
+              <code class="text-body-secondary font-mono" style="font-size: 0.8rem;">$ curl -fsSL https://inari.hermestech.uk/install.sh | sh</code>
             </div>
           </div>
           <div class="d-flex gap-3">
@@ -875,7 +875,7 @@
 <script>
   // Copy to clipboard with fallback for Firefox / HTTP
   function copyCmd(el) {
-    var text = 'go install github.com/KilimcininKorOglu/inari/cmd/inari@latest';
+    var text = 'curl -fsSL https://inari.hermestech.uk/install.sh | sh';
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(text).then(function() { flashCopied(el); });
     } else {
