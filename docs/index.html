@@ -272,9 +272,9 @@
 
         <div class="d-flex align-items-center gap-2 flex-wrap mb-4 font-mono" style="font-size: 0.82rem;">
           <span class="text-accent">$</span>
-          <code class="text-accent" style="cursor: pointer; background: none;" onclick="navigator.clipboard.writeText('go install github.com/KilimcininKorOglu/inari/cmd/inari@latest')">go install github.com/KilimcininKorOglu/inari/cmd/inari@latest</code>
+          <code class="text-accent" style="cursor: pointer; background: none;" onclick="copyCmd(this)">go install github.com/KilimcininKorOglu/inari/cmd/inari@latest</code>
           <span class="input-cursor"></span>
-          <button class="btn btn-link btn-sm p-0 text-secondary" onclick="navigator.clipboard.writeText('go install github.com/KilimcininKorOglu/inari/cmd/inari@latest')">
+          <button class="btn btn-link btn-sm p-0 text-secondary" onclick="copyCmd(this)">
             <i class="bi bi-clipboard"></i>
           </button>
         </div>
@@ -873,6 +873,31 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+  // Copy to clipboard with fallback for Firefox / HTTP
+  function copyCmd(el) {
+    var text = 'go install github.com/KilimcininKorOglu/inari/cmd/inari@latest';
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function() { flashCopied(el); });
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      flashCopied(el);
+    }
+  }
+  function flashCopied(el) {
+    var btn = el.closest('.d-flex').querySelector('.bi-clipboard');
+    if (btn) {
+      btn.className = 'bi bi-check-lg';
+      setTimeout(function() { btn.className = 'bi bi-clipboard'; }, 1500);
+    }
+  }
+
   // Scroll reveals (IntersectionObserver)
   const obs = new IntersectionObserver(
     es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } }),
