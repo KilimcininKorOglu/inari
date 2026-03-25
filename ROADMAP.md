@@ -21,5 +21,3 @@
 - [ ] MCP adapter
 
 ## Later
-
-- [ ] ASP language support
