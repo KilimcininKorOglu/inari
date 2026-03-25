@@ -65,3 +65,11 @@ var KotlinSymbolsQuery string
 
 //go:embed kotlin/edges.scm
 var KotlinEdgesQuery string
+
+// Ruby queries
+
+//go:embed ruby/symbols.scm
+var RubySymbolsQuery string
+
+//go:embed ruby/edges.scm
+var RubyEdgesQuery string

@@ -117,6 +117,8 @@ func (cp *CodeParser) DetectLanguage(path string) (languages.SupportedLanguage, 
 		return languages.Kotlin, nil
 	case "rs":
 		return languages.Rust, nil
+	case "rb":
+		return languages.Ruby, nil
 	default:
 		return 0, fmt.Errorf("unsupported file extension: .%s", ext)
 	}
@@ -185,6 +187,10 @@ func (cp *CodeParser) ExtractSymbols(filePath string, source []byte, lang langua
 			switch captureName {
 			case "name":
 				nameText = text
+				// Strip leading ':' from Ruby symbol literals (e.g. :name from attr_accessor).
+				if len(nameText) > 1 && nameText[0] == ':' {
+					nameText = nameText[1:]
+				}
 				hasName = true
 			case "definition":
 				defNode = capture.Node

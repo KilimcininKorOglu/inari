@@ -153,6 +153,13 @@ func detectLanguages(projectRoot string) []string {
 		languages = append(languages, "kotlin")
 	}
 
+	// Ruby detection.
+	if fileExists(filepath.Join(projectRoot, "Gemfile")) ||
+		fileExists(filepath.Join(projectRoot, "Rakefile")) ||
+		fileExists(filepath.Join(projectRoot, "config.ru")) {
+		languages = append(languages, "ruby")
+	}
+
 	return languages
 }
 
@@ -200,6 +207,8 @@ func languageDisplayName(lang string) string {
 		return "Kotlin"
 	case "rust":
 		return "Rust"
+	case "ruby":
+		return "Ruby"
 	default:
 		return lang
 	}

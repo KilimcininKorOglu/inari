@@ -32,6 +32,8 @@ const (
 	Kotlin
 	// Rust represents .rs files.
 	Rust
+	// Ruby represents .rb files.
+	Ruby
 )
 
 // AsStr returns the language name as a lowercase identifier string.
@@ -51,6 +53,8 @@ func (l SupportedLanguage) AsStr() string {
 		return "kotlin"
 	case Rust:
 		return "rust"
+	case Ruby:
+		return "ruby"
 	default:
 		return "unknown"
 	}
@@ -73,6 +77,8 @@ func (l SupportedLanguage) String() string {
 		return "Kotlin"
 	case Rust:
 		return "Rust"
+	case Ruby:
+		return "Ruby"
 	default:
 		return fmt.Sprintf("SupportedLanguage(%d)", int(l))
 	}

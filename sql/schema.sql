@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS symbols (
     name        TEXT NOT NULL,
     kind        TEXT NOT NULL CHECK(kind IN (
                     'function','class','method','interface',
-                    'struct','enum','const','type','property'
+                    'struct','enum','const','type','property','module'
                 )),
     file_path   TEXT NOT NULL,
     line_start  INTEGER NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS edges (
     to_id       TEXT NOT NULL,
     kind        TEXT NOT NULL CHECK(kind IN (
                     'calls','imports','extends','implements',
-                    'instantiates','references','references_type'
+                    'instantiates','references','references_type','includes'
                 )),
     file_path   TEXT NOT NULL,
     line        INTEGER,
