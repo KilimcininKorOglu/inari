@@ -7,11 +7,11 @@ import "strings"
 // Keep in sync with internal/languages plugin registrations.
 var sourceExtensions = []string{
 	".ts", ".tsx", ".js", ".jsx", // TypeScript / JavaScript
-	".cs",                        // C#
-	".rs",                        // Rust
-	".py",                        // Python
-	".go",                        // Go (planned)
-	".java",                      // Java (planned)
+	".cs",   // C#
+	".rs",   // Rust
+	".py",   // Python
+	".go",   // Go (planned)
+	".java", // Java (planned)
 }
 
 // LooksLikeFilePath returns true if the input looks like a file path

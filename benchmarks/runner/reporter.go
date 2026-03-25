@@ -15,20 +15,20 @@ import (
 
 // BenchmarkRun holds a single benchmark run result.
 type BenchmarkRun struct {
-	TaskID                   string           `json:"task_id"`
-	Repetition               uint32           `json:"repetition"`
-	InariEnabled             bool             `json:"inari_enabled"`
-	Condition                string           `json:"condition"`
-	InputTokens              uint64           `json:"input_tokens"`
-	OutputTokens             uint64           `json:"output_tokens"`
-	CacheCreationInputTokens uint64           `json:"cache_creation_input_tokens"`
-	CacheReadInputTokens     uint64           `json:"cache_read_input_tokens"`
-	FileReads                uint32           `json:"file_reads"`
-	InariCommandsCalled      []string         `json:"inari_commands_called"`
+	TaskID                   string            `json:"task_id"`
+	Repetition               uint32            `json:"repetition"`
+	InariEnabled             bool              `json:"inari_enabled"`
+	Condition                string            `json:"condition"`
+	InputTokens              uint64            `json:"input_tokens"`
+	OutputTokens             uint64            `json:"output_tokens"`
+	CacheCreationInputTokens uint64            `json:"cache_creation_input_tokens"`
+	CacheReadInputTokens     uint64            `json:"cache_read_input_tokens"`
+	FileReads                uint32            `json:"file_reads"`
+	InariCommandsCalled      []string          `json:"inari_commands_called"`
 	Correctness              CorrectnessResult `json:"correctness"`
-	DurationMs               uint64           `json:"duration_ms"`
-	Actions                  []AgentAction    `json:"actions"`
-	Behavior                 *BehaviorMetrics `json:"behavior,omitempty"`
+	DurationMs               uint64            `json:"duration_ms"`
+	Actions                  []AgentAction     `json:"actions"`
+	Behavior                 *BehaviorMetrics  `json:"behavior,omitempty"`
 }
 
 // CorrectnessResult holds correctness verification results for a single run.

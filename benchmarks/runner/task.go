@@ -14,22 +14,22 @@ import (
 type TaskCategory string
 
 const (
-	TaskCategoryDiscovery           TaskCategory = "discovery"
-	TaskCategoryBugFix              TaskCategory = "bug_fix"
-	TaskCategoryRefactoring         TaskCategory = "refactoring"
-	TaskCategoryNewFeature          TaskCategory = "new_feature"
-	TaskCategoryFocusedExploration  TaskCategory = "focused_exploration"
-	TaskCategoryCrossCutting        TaskCategory = "cross_cutting"
+	TaskCategoryDiscovery          TaskCategory = "discovery"
+	TaskCategoryBugFix             TaskCategory = "bug_fix"
+	TaskCategoryRefactoring        TaskCategory = "refactoring"
+	TaskCategoryNewFeature         TaskCategory = "new_feature"
+	TaskCategoryFocusedExploration TaskCategory = "focused_exploration"
+	TaskCategoryCrossCutting       TaskCategory = "cross_cutting"
 )
 
 // TaskDef is a complete task definition loaded from a TOML file.
 type TaskDef struct {
-	Task        TaskMeta        `toml:"task"`
-	Prompt      PromptDef       `toml:"prompt"`
-	Target      TargetDef       `toml:"target"`
-	Correctness CorrectnessDef  `toml:"correctness"`
-	GroundTruth GroundTruthDef  `toml:"ground_truth"`
-	Inari       InariDef        `toml:"inari"`
+	Task        TaskMeta       `toml:"task"`
+	Prompt      PromptDef      `toml:"prompt"`
+	Target      TargetDef      `toml:"target"`
+	Correctness CorrectnessDef `toml:"correctness"`
+	GroundTruth GroundTruthDef `toml:"ground_truth"`
+	Inari       InariDef       `toml:"inari"`
 }
 
 // TaskMeta holds metadata about the task.
@@ -54,9 +54,9 @@ type TargetDef struct {
 
 // CorrectnessDef specifies correctness criteria for verification.
 type CorrectnessDef struct {
-	RequireCompilation     bool    `toml:"require_compilation"`
-	RequireTestsPass       bool    `toml:"require_tests_pass"`
-	RequireCallerCoverage  bool    `toml:"require_caller_coverage"`
+	RequireCompilation      bool    `toml:"require_compilation"`
+	RequireTestsPass        bool    `toml:"require_tests_pass"`
+	RequireCallerCoverage   bool    `toml:"require_caller_coverage"`
 	CallerCoverageThreshold float64 `toml:"caller_coverage_threshold"`
 	PatternMatchThreshold   float64 `toml:"pattern_match_threshold"`
 }

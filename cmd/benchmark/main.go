@@ -221,9 +221,9 @@ func newManifestCmd() *cobra.Command {
 
 func newVerifyCmd() *cobra.Command {
 	var (
-		dir      string
-		task     string
-		asJSON   bool
+		dir    string
+		task   string
+		asJSON bool
 	)
 
 	cmd := &cobra.Command{

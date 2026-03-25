@@ -122,13 +122,13 @@ func runFullIndex(
 			}
 		}
 		result := map[string]interface{}{
-			"command":      "index",
-			"mode":         "full",
-			"file_count":   stats.FileCount,
-			"symbol_count": stats.SymbolCount,
-			"edge_count":   stats.EdgeCount,
+			"command":       "index",
+			"mode":          "full",
+			"file_count":    stats.FileCount,
+			"symbol_count":  stats.SymbolCount,
+			"edge_count":    stats.EdgeCount,
 			"duration_secs": stats.Duration.Seconds(),
-			"languages":    langStats,
+			"languages":     langStats,
 		}
 		data, err := json.MarshalIndent(result, "", "  ")
 		if err != nil {
@@ -401,11 +401,11 @@ shutdown:
 
 	if jsonFlag {
 		stopEvent := map[string]interface{}{
-			"event":                "stop",
-			"total_reindexes":      totalReindexes,
+			"event":                 "stop",
+			"total_reindexes":       totalReindexes,
 			"total_files_processed": totalFilesProcessed,
-			"uptime_seconds":       uptimeSecs,
-			"timestamp":            time.Now().UTC().Format(time.RFC3339),
+			"uptime_seconds":        uptimeSecs,
+			"timestamp":             time.Now().UTC().Format(time.RFC3339),
 		}
 		data, err := json.Marshal(stopEvent)
 		if err != nil {
@@ -448,4 +448,3 @@ func getSupportedExtensions(cfg *config.ProjectConfig) []string {
 	}
 	return extensions
 }
-

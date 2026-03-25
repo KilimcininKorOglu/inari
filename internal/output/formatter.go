@@ -63,12 +63,12 @@ type EntrypointInfo struct {
 
 // StatusData holds index health information for a single project.
 type StatusData struct {
-	IndexExists         bool   `json:"index_exists"`
-	SearchAvailable     bool   `json:"search_available"`
-	SymbolCount         int    `json:"symbol_count"`
-	FileCount           int    `json:"file_count"`
-	EdgeCount           int    `json:"edge_count"`
-	LastIndexedAt       *int64 `json:"last_indexed_at"`
+	IndexExists         bool    `json:"index_exists"`
+	SearchAvailable     bool    `json:"search_available"`
+	SymbolCount         int     `json:"symbol_count"`
+	FileCount           int     `json:"file_count"`
+	EdgeCount           int     `json:"edge_count"`
+	LastIndexedAt       *int64  `json:"last_indexed_at"`
 	LastIndexedRelative *string `json:"last_indexed_relative"`
 }
 
@@ -1178,4 +1178,3 @@ func impactDepthLabel(depth int) string {
 		return "Further impact"
 	}
 }
-

@@ -21,17 +21,17 @@ type CSharpPlugin struct{}
 
 // csMetadata holds structured metadata for a C# symbol.
 type csMetadata struct {
-	Access     string              `json:"access"`
-	IsAsync    bool                `json:"is_async"`
-	IsStatic   bool                `json:"is_static"`
-	IsAbstract bool                `json:"is_abstract"`
-	IsVirtual  bool                `json:"is_virtual"`
-	IsOverride bool                `json:"is_override"`
-	IsSealed   bool                `json:"is_sealed"`
-	IsReadonly bool                `json:"is_readonly"`
-	IsPartial  bool                `json:"is_partial"`
-	ReturnType *string             `json:"return_type"`
-	Parameters []csParameterInfo   `json:"parameters"`
+	Access     string            `json:"access"`
+	IsAsync    bool              `json:"is_async"`
+	IsStatic   bool              `json:"is_static"`
+	IsAbstract bool              `json:"is_abstract"`
+	IsVirtual  bool              `json:"is_virtual"`
+	IsOverride bool              `json:"is_override"`
+	IsSealed   bool              `json:"is_sealed"`
+	IsReadonly bool              `json:"is_readonly"`
+	IsPartial  bool              `json:"is_partial"`
+	ReturnType *string           `json:"return_type"`
+	Parameters []csParameterInfo `json:"parameters"`
 }
 
 // csParameterInfo holds information about a single C# method/constructor parameter.

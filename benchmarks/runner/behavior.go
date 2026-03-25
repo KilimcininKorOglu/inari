@@ -8,38 +8,38 @@ import (
 
 // BehaviorMetrics holds behavior metrics derived from an agent's action sequence.
 type BehaviorMetrics struct {
-	ActionsBeforeFirstEdit      uint32   `json:"actions_before_first_edit"`
-	NavigationToEditRatio       float64  `json:"navigation_to_edit_ratio"`
-	UniqueFilesRead             uint32   `json:"unique_files_read"`
-	RedundantReads              uint32   `json:"redundant_reads"`
-	TotalActions                uint32   `json:"total_actions"`
-	InariCommandsTotal          uint32   `json:"inari_commands_total"`
-	InariCommandsBeforeFirstEdit uint32  `json:"inari_commands_before_first_edit"`
-	InariThenReadSameFile       uint32   `json:"inari_then_read_same_file"`
-	InariCommandSequence        []string `json:"inari_command_sequence"`
-	GrepAfterInariFind          uint32   `json:"grep_after_inari_find"`
-	CallersAndRefsSameSymbol    bool     `json:"callers_and_refs_same_symbol"`
+	ActionsBeforeFirstEdit       uint32   `json:"actions_before_first_edit"`
+	NavigationToEditRatio        float64  `json:"navigation_to_edit_ratio"`
+	UniqueFilesRead              uint32   `json:"unique_files_read"`
+	RedundantReads               uint32   `json:"redundant_reads"`
+	TotalActions                 uint32   `json:"total_actions"`
+	InariCommandsTotal           uint32   `json:"inari_commands_total"`
+	InariCommandsBeforeFirstEdit uint32   `json:"inari_commands_before_first_edit"`
+	InariThenReadSameFile        uint32   `json:"inari_then_read_same_file"`
+	InariCommandSequence         []string `json:"inari_command_sequence"`
+	GrepAfterInariFind           uint32   `json:"grep_after_inari_find"`
+	CallersAndRefsSameSymbol     bool     `json:"callers_and_refs_same_symbol"`
 }
 
 // BehaviorComparison aggregates behavior metrics between conditions.
 type BehaviorComparison struct {
-	MeanActionsBeforeEditWith    float64          `json:"mean_actions_before_edit_with"`
-	MeanActionsBeforeEditWithout float64          `json:"mean_actions_before_edit_without"`
-	MeanNavRatioWith             float64          `json:"mean_nav_ratio_with"`
-	MeanNavRatioWithout          float64          `json:"mean_nav_ratio_without"`
-	MeanUniqueReadsWith          float64          `json:"mean_unique_reads_with"`
-	MeanUniqueReadsWithout       float64          `json:"mean_unique_reads_without"`
-	MeanRedundantReadsWith       float64          `json:"mean_redundant_reads_with"`
-	MeanRedundantReadsWithout    float64          `json:"mean_redundant_reads_without"`
-	MeanInariCommands            float64          `json:"mean_inari_commands"`
+	MeanActionsBeforeEditWith    float64           `json:"mean_actions_before_edit_with"`
+	MeanActionsBeforeEditWithout float64           `json:"mean_actions_before_edit_without"`
+	MeanNavRatioWith             float64           `json:"mean_nav_ratio_with"`
+	MeanNavRatioWithout          float64           `json:"mean_nav_ratio_without"`
+	MeanUniqueReadsWith          float64           `json:"mean_unique_reads_with"`
+	MeanUniqueReadsWithout       float64           `json:"mean_unique_reads_without"`
+	MeanRedundantReadsWith       float64           `json:"mean_redundant_reads_with"`
+	MeanRedundantReadsWithout    float64           `json:"mean_redundant_reads_without"`
+	MeanInariCommands            float64           `json:"mean_inari_commands"`
 	InariAntiPatterns            InariAntiPatterns `json:"inari_anti_patterns"`
 }
 
 // InariAntiPatterns counts detected anti-patterns in inari command usage.
 type InariAntiPatterns struct {
-	SketchThenReadCount  uint32 `json:"sketch_then_read_count"`
-	GrepAfterFindCount   uint32 `json:"grep_after_find_count"`
-	CallersAndRefsCount  uint32 `json:"callers_and_refs_count"`
+	SketchThenReadCount uint32 `json:"sketch_then_read_count"`
+	GrepAfterFindCount  uint32 `json:"grep_after_find_count"`
+	CallersAndRefsCount uint32 `json:"callers_and_refs_count"`
 }
 
 // ComputeBehaviorMetrics analyzes the action log to derive navigation efficiency,

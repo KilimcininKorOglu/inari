@@ -21,9 +21,9 @@ import (
 // graph and searcher connections for consistent behavior.
 var sharedPragmas = []string{
 	"PRAGMA journal_mode=WAL",
-	"PRAGMA busy_timeout=5000",  // 5 seconds for lock contention
+	"PRAGMA busy_timeout=5000", // 5 seconds for lock contention
 	"PRAGMA synchronous=NORMAL",
-	"PRAGMA cache_size=-64000",  // 64 MB page cache
+	"PRAGMA cache_size=-64000", // 64 MB page cache
 	"PRAGMA temp_store=MEMORY",
 }
 
@@ -724,8 +724,8 @@ func (g *Graph) GetFileSymbols(filePath string) ([]Symbol, error) {
 
 // EntrypointResult pairs a Symbol with its outgoing call count (fan-out).
 type EntrypointResult struct {
-	Symbol  Symbol `json:"symbol"`
-	FanOut  int    `json:"fan_out"`
+	Symbol Symbol `json:"symbol"`
+	FanOut int    `json:"fan_out"`
 }
 
 // GetEntrypoints finds symbols that are entry points -- symbols with zero incoming call edges.

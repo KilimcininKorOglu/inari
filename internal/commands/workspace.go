@@ -20,12 +20,12 @@ import (
 
 // memberStatus holds status information for a single workspace member (list subcommand).
 type memberStatus struct {
-	Name          string  `json:"name"`
-	Path          string  `json:"path"`
-	Status        string  `json:"status"`
-	FileCount     int     `json:"file_count"`
-	SymbolCount   int     `json:"symbol_count"`
-	LastIndexedAt *int64  `json:"last_indexed_at"`
+	Name          string `json:"name"`
+	Path          string `json:"path"`
+	Status        string `json:"status"`
+	FileCount     int    `json:"file_count"`
+	SymbolCount   int    `json:"symbol_count"`
+	LastIndexedAt *int64 `json:"last_indexed_at"`
 }
 
 // workspaceListData is the JSON data payload for `inari workspace list`.

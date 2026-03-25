@@ -168,4 +168,3 @@ func countDistinctFiles(results []core.EntrypointResult) int {
 	}
 	return len(seen)
 }
-

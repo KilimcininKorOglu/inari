@@ -24,15 +24,15 @@ type PythonPlugin struct{}
 
 // PythonMetadata holds structured metadata for a Python symbol.
 type PythonMetadata struct {
-	Access      string              `json:"access"`
-	IsAsync     bool                `json:"is_async"`
-	IsStatic    bool                `json:"is_static"`
-	IsClassmethod bool             `json:"is_classmethod"`
-	IsAbstract  bool                `json:"is_abstract"`
-	IsProperty  bool                `json:"is_property"`
-	Decorators  []string            `json:"decorators"`
-	ReturnType  *string             `json:"return_type"`
-	Parameters  []PythonParameterInfo `json:"parameters"`
+	Access        string                `json:"access"`
+	IsAsync       bool                  `json:"is_async"`
+	IsStatic      bool                  `json:"is_static"`
+	IsClassmethod bool                  `json:"is_classmethod"`
+	IsAbstract    bool                  `json:"is_abstract"`
+	IsProperty    bool                  `json:"is_property"`
+	Decorators    []string              `json:"decorators"`
+	ReturnType    *string               `json:"return_type"`
+	Parameters    []PythonParameterInfo `json:"parameters"`
 }
 
 // PythonParameterInfo holds information about a single Python function/method parameter.

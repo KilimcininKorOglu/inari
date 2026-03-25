@@ -20,13 +20,13 @@ type TypeScriptPlugin struct{}
 
 // tsSymbolMetadata holds structured metadata for a TypeScript symbol.
 type tsSymbolMetadata struct {
-	Access     string             `json:"access"`
-	IsAsync    bool               `json:"is_async"`
-	IsStatic   bool               `json:"is_static"`
-	IsAbstract bool               `json:"is_abstract"`
-	IsReadonly bool               `json:"is_readonly"`
-	ReturnType *string            `json:"return_type"`
-	Parameters []tsParameterInfo  `json:"parameters"`
+	Access     string            `json:"access"`
+	IsAsync    bool              `json:"is_async"`
+	IsStatic   bool              `json:"is_static"`
+	IsAbstract bool              `json:"is_abstract"`
+	IsReadonly bool              `json:"is_readonly"`
+	ReturnType *string           `json:"return_type"`
+	Parameters []tsParameterInfo `json:"parameters"`
 }
 
 // tsParameterInfo holds information about a single function/method parameter.
