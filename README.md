@@ -247,7 +247,7 @@ Prerequisites: Go 1.25+, C compiler (tree-sitter requires CGO).
 git clone https://github.com/KilimcininKorOglu/inari.git
 cd inari
 make build                     # bin/inari + bin/inari-benchmark
-make test                      # all tests (88+ integration + unit)
+make test                      # all tests (130+ integration + unit)
 make vet                       # go vet
 make fmt-check                 # formatting check
 ```
