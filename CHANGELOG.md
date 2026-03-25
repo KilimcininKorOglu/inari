@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.4] - 2026-03-25
+
+### Added
+- C++ language support with classes, namespaces, inheritance, member calls (->), scope resolution (::), and new expressions
+
 ## [1.3.3] - 2026-03-25
 
 ### Added

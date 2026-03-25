@@ -17,7 +17,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var version = "1.3.3"
+var version = "1.3.4"
 var verbose bool
 
 func main() {
