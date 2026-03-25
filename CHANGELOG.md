@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.2] - 2026-03-25
+
+### Added
+- Bash language support with function definitions, source/. imports, and command call detection
+
 ## [1.3.1] - 2026-03-25
 
 ### Added
