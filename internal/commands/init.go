@@ -135,6 +135,11 @@ func detectLanguages(projectRoot string) []string {
 		languages = append(languages, "rust")
 	}
 
+	// Go detection.
+	if fileExists(filepath.Join(projectRoot, "go.mod")) {
+		languages = append(languages, "go")
+	}
+
 	return languages
 }
 

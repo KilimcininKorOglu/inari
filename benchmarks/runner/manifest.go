@@ -150,6 +150,7 @@ func collectSourceFiles(fixtureDir string) ([]ManifestEntry, error) {
 		".cs": true, ".json": true, ".csproj": true, ".sln": true,
 		".py": true, ".pyi": true,
 		".rs": true, ".toml": true,
+		".go": true,
 	}
 
 	var entries []ManifestEntry

@@ -7,7 +7,7 @@ import (
 // TestSketchAcrossLanguages runs sketch on PaymentService across all language fixtures.
 // Ensures core command behavior is not TypeScript-specific.
 func TestSketchAcrossLanguages(t *testing.T) {
-	fixtures := []string{"typescript-simple", "python-simple", "rust-simple", "csharp-simple"}
+	fixtures := []string{"typescript-simple", "python-simple", "rust-simple", "csharp-simple", "go-simple"}
 	for _, fixture := range fixtures {
 		t.Run(fixture, func(t *testing.T) {
 			dir := setupIndexedFixture(t, fixture)
@@ -19,7 +19,7 @@ func TestSketchAcrossLanguages(t *testing.T) {
 
 // TestFindAcrossLanguages runs find on PaymentService across all language fixtures.
 func TestFindAcrossLanguages(t *testing.T) {
-	fixtures := []string{"typescript-simple", "python-simple", "rust-simple", "csharp-simple"}
+	fixtures := []string{"typescript-simple", "python-simple", "rust-simple", "csharp-simple", "go-simple"}
 	for _, fixture := range fixtures {
 		t.Run(fixture, func(t *testing.T) {
 			dir := setupIndexedFixture(t, fixture)
@@ -46,6 +46,7 @@ func TestRefsAcrossLanguages(t *testing.T) {
 		{"python-simple", "process_payment"},
 		{"rust-simple", "process_payment"},
 		{"csharp-simple", "ProcessPayment"},
+		{"go-simple", "ProcessPayment"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.fixture, func(t *testing.T) {
@@ -65,6 +66,7 @@ func TestMapAcrossLanguages(t *testing.T) {
 		{"python-simple", "PaymentService"},
 		{"rust-simple", "process_payment"},
 		{"csharp-simple", "PaymentService"},
+		{"go-simple", "ProcessPayment"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.fixture, func(t *testing.T) {

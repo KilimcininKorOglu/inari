@@ -41,3 +41,11 @@ var RustSymbolsQuery string
 
 //go:embed rust/edges.scm
 var RustEdgesQuery string
+
+// Go queries
+
+//go:embed go/symbols.scm
+var GoSymbolsQuery string
+
+//go:embed go/edges.scm
+var GoEdgesQuery string
