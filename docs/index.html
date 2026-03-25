@@ -270,13 +270,23 @@
           // tree-sitter AST &rarr; SQLite graph &rarr; one CLI call &rarr; structured signal.
         </p>
 
-        <div class="d-flex align-items-center gap-2 flex-wrap mb-4 font-mono" style="font-size: 0.82rem;">
-          <span class="text-accent">$</span>
-          <code class="text-accent" style="cursor: pointer; background: none;" onclick="copyCmd(this)">curl -fsSL https://inari.hermestech.uk/install.sh | sh</code>
-          <span class="input-cursor"></span>
-          <button class="btn btn-link btn-sm p-0 text-secondary" onclick="copyCmd(this)">
-            <i class="bi bi-clipboard"></i>
-          </button>
+        <div class="d-flex flex-column gap-2 mb-4 font-mono" style="font-size: 0.82rem;">
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <span class="text-body-secondary" style="min-width: 70px;">bash</span>
+            <span class="text-accent">$</span>
+            <code class="text-accent" style="cursor: pointer; background: none;" onclick="copyCmd(this, 'sh')">curl -fsSL https://inari.hermestech.uk/install.sh | sh</code>
+            <button class="btn btn-link btn-sm p-0 text-secondary" onclick="copyCmd(this, 'sh')">
+              <i class="bi bi-clipboard"></i>
+            </button>
+          </div>
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <span class="text-body-secondary" style="min-width: 70px;">powershell</span>
+            <span class="text-accent">></span>
+            <code class="text-accent" style="cursor: pointer; background: none;" onclick="copyCmd(this, 'ps1')">irm https://inari.hermestech.uk/install.ps1 | iex</code>
+            <button class="btn btn-link btn-sm p-0 text-secondary" onclick="copyCmd(this, 'ps1')">
+              <i class="bi bi-clipboard"></i>
+            </button>
+          </div>
         </div>
 
         <div class="row g-3 mb-4">
@@ -874,8 +884,12 @@
 
 <script>
   // Copy to clipboard with fallback for Firefox / HTTP
-  function copyCmd(el) {
-    var text = 'curl -fsSL https://inari.hermestech.uk/install.sh | sh';
+  var installCmds = {
+    sh: 'curl -fsSL https://inari.hermestech.uk/install.sh | sh',
+    ps1: 'irm https://inari.hermestech.uk/install.ps1 | iex'
+  };
+  function copyCmd(el, type) {
+    var text = installCmds[type || 'sh'];
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(text).then(function() { flashCopied(el); });
     } else {
