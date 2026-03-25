@@ -107,6 +107,8 @@ inari index --watch                      # auto re-index on file changes
 | `inari init`           | Initialise Inari for a project. Detects languages automatically. |
 | `inari index [--full]` | Build or refresh the index. Incremental by default.              |
 | `inari index --watch`  | Monitor files and auto re-index with 300ms debounce.             |
+| `inari update`         | Check for and install the latest version from GitHub Releases.   |
+| `inari update --check` | Check for updates without installing.                            |
 
 ### Workspaces
 
@@ -119,12 +121,13 @@ inari index --watch                      # auto re-index on file changes
 
 ### Global flags
 
-| Flag          | Description                                 |
-|---------------|---------------------------------------------|
-| `--json`      | Structured JSON output on all commands.     |
-| `--workspace` | Query across all workspace members.         |
-| `--project`   | Target a specific workspace member by name. |
-| `--verbose`   | Debug output to stderr.                     |
+| Flag                | Description                                 |
+|---------------------|---------------------------------------------|
+| `--json`            | Structured JSON output on all commands.     |
+| `--workspace`       | Query across all workspace members.         |
+| `--project`         | Target a specific workspace member by name. |
+| `--verbose`         | Debug output to stderr.                     |
+| `--no-update-check` | Disable automatic background update checks. |
 
 ---
 
