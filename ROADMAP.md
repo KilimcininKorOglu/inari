@@ -14,6 +14,12 @@
 
 ## Next
 
+- [ ] Swift language support
+- [ ] Bash language support
+- [ ] C language support
+- [ ] C++ language support
+- [ ] Protobuf language support
+- [ ] SQL language support
 - [ ] Vector embeddings via local ONNX model
 - [ ] Cross-project edge detection via `inari link`
 - [ ] MCP adapter
