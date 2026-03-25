@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] - 2026-03-25
+
+### Added
+- Swift language support with protocol as interface, class/struct/enum declarations, navigation expressions, and inheritance specifiers
+
 ## [1.3.0] - 2026-03-25
 
 ### Added
