@@ -44,12 +44,12 @@ fields:
 go install github.com/KilimcininKorOglu/inari/cmd/inari@latest
 
 # Option 2: curl (Linux and macOS)
-curl -fsSL https://raw.githubusercontent.com/KilimcininKorOglu/inari/main/install.sh | sh
+curl -fsSL https://inari.hermestech.uk/install.sh | sh
 ```
 
 ```powershell
 # Option 3: PowerShell (Windows)
-irm https://raw.githubusercontent.com/KilimcininKorOglu/inari/main/install.ps1 | iex
+irm https://inari.hermestech.uk/install.ps1 | iex
 ```
 
 Verify:
