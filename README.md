@@ -290,9 +290,22 @@ max_depth = 3
 
 ---
 
-## CLAUDE.md integration
+## Agent integration
 
-Add the following to your project's `CLAUDE.md`. Also available at [`docs/CLAUDE.md.snippet`](docs/CLAUDE.md.snippet).
+Inari works with any AI coding agent that can run shell commands. Add the snippet below to your agent's instruction file. The full version is at [`docs/CLAUDE.md.snippet`](docs/CLAUDE.md.snippet).
+
+| Agent                  | Instruction file                             |
+|------------------------|----------------------------------------------|
+| Claude Code            | `CLAUDE.md`                                  |
+| Cursor                 | `.cursor/rules/*.mdc` or `.cursorrules`      |
+| GitHub Copilot         | `.github/copilot-instructions.md`            |
+| Gemini CLI             | `GEMINI.md`                                  |
+| Codex                  | `AGENTS.md`                                  |
+| Aider                  | `.aider.conf.yml` (conventions section)      |
+| Windsurf / Codeium     | `.windsurfrules`                             |
+| Other agents           | Any project-level instruction file           |
+
+### Snippet
 
 ```markdown
 ## Code Navigation
