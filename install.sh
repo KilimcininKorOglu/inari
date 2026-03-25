@@ -6,33 +6,36 @@ set -e
 REPO="KilimcininKorOglu/inari"
 BINARY="inari"
 
-# Determine OS and architecture
+# Determine OS and architecture (Go naming convention)
 detect_platform() {
     OS="$(uname -s)"
     ARCH="$(uname -m)"
 
     case "${OS}" in
         Linux)
-            case "${ARCH}" in
-                x86_64)  TARGET="x86_64-unknown-linux-gnu" ;;
-                *)       echo "Error: unsupported Linux architecture: ${ARCH}" >&2; exit 1 ;;
-            esac
+            GOOS="linux"
             ;;
         Darwin)
-            case "${ARCH}" in
-                x86_64)      TARGET="x86_64-apple-darwin" ;;
-                arm64|aarch64) TARGET="aarch64-apple-darwin" ;;
-                *)           echo "Error: unsupported macOS architecture: ${ARCH}" >&2; exit 1 ;;
-            esac
+            GOOS="darwin"
             ;;
         MINGW*|MSYS*|CYGWIN*)
-            case "${ARCH}" in
-                x86_64)  TARGET="x86_64-pc-windows-msvc" ;;
-                *)       echo "Error: unsupported Windows architecture: ${ARCH}" >&2; exit 1 ;;
-            esac
+            GOOS="windows"
             ;;
         *)
             echo "Error: unsupported operating system: ${OS}" >&2
+            exit 1
+            ;;
+    esac
+
+    case "${ARCH}" in
+        x86_64|amd64)
+            GOARCH="amd64"
+            ;;
+        arm64|aarch64)
+            GOARCH="arm64"
+            ;;
+        *)
+            echo "Error: unsupported architecture: ${ARCH}" >&2
             exit 1
             ;;
     esac
@@ -68,25 +71,25 @@ install() {
     get_latest_version
     choose_install_dir
 
-    if [ "${TARGET}" = "x86_64-pc-windows-msvc" ]; then
-        FILENAME="${BINARY}-${VERSION}-${TARGET}.exe"
-    else
-        FILENAME="${BINARY}-${VERSION}-${TARGET}"
+    EXT=""
+    if [ "${GOOS}" = "windows" ]; then
+        EXT=".exe"
     fi
 
+    FILENAME="${BINARY}-${VERSION}-${GOOS}-${GOARCH}${EXT}"
     URL="https://github.com/${REPO}/releases/download/${VERSION}/${FILENAME}"
 
-    echo "Installing Inari ${VERSION} for ${TARGET}..."
+    echo "Installing Inari ${VERSION} for ${GOOS}-${GOARCH}..."
     echo "  Downloading from ${URL}"
 
     TMP_DIR=$(mktemp -d)
     trap 'rm -rf "${TMP_DIR}"' EXIT
 
-    curl -fsSL "${URL}" -o "${TMP_DIR}/${BINARY}"
-    chmod +x "${TMP_DIR}/${BINARY}"
-    mv "${TMP_DIR}/${BINARY}" "${INSTALL_DIR}/${BINARY}"
+    curl -fsSL "${URL}" -o "${TMP_DIR}/${BINARY}${EXT}"
+    chmod +x "${TMP_DIR}/${BINARY}${EXT}"
+    mv "${TMP_DIR}/${BINARY}${EXT}" "${INSTALL_DIR}/${BINARY}${EXT}"
 
-    echo "  Installed to ${INSTALL_DIR}/${BINARY}"
+    echo "  Installed to ${INSTALL_DIR}/${BINARY}${EXT}"
     echo ""
 
     # Check if install dir is in PATH
