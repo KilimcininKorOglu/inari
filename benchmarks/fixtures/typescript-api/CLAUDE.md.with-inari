@@ -1,0 +1,4 @@
+## Code Navigation
+This project uses Inari for structural code navigation.
+Before editing: `inari sketch <symbol>`, `inari refs <symbol>`, `inari impact <symbol>`
+Finding code: `inari find "<description>"`

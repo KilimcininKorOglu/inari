@@ -1,0 +1,30 @@
+[task]
+id = "ts-cat-e-01"
+category = "focused-exploration"
+language = "typescript"
+corpus = "fixture"
+description = "Explain payment flow from checkout to notification for debugging"
+
+[prompt]
+text = """
+Explain how payment processing works in this codebase, from \
+OrderController.checkout through to notification delivery. I need to \
+understand this flow to debug a charge failure. Write your explanation \
+in docs/payment-flow.md with the key steps, method signatures, and \
+where errors are handled at each layer. Focus on the payment path only — \
+don't document unrelated parts of the architecture.
+"""
+
+[target]
+symbol = "OrderController.checkout"
+file = "docs/payment-flow.md"
+
+[correctness]
+require_compilation = false
+require_tests_pass = false
+require_caller_coverage = false
+caller_coverage_threshold = 0.0
+pattern_match_threshold = 0.0
+
+[inari]
+expected_commands = ["inari sketch", "inari deps"]

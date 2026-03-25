@@ -1,0 +1,87 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.goos }}-${{ matrix.goarch }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - goos: darwin
+            goarch: arm64
+            os: macos-14
+          - goos: darwin
+            goarch: amd64
+            os: macos-13
+          - goos: linux
+            goarch: amd64
+            os: ubuntu-latest
+          - goos: windows
+            goarch: amd64
+            os: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache: true
+
+      - name: Build release binary
+        shell: bash
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: 1
+        run: |
+          VERSION="${GITHUB_REF_NAME}"
+          if [[ "${{ matrix.goos }}" == "windows" ]]; then
+            EXT=".exe"
+          else
+            EXT=""
+          fi
+          BIN_NAME="inari-${VERSION}-${{ matrix.goos }}-${{ matrix.goarch }}${EXT}"
+          go build -ldflags="-s -w -X main.version=${VERSION}" -o "${BIN_NAME}" ./cmd/inari/
+          echo "bin_name=${BIN_NAME}" >> "$GITHUB_OUTPUT"
+        id: build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.build.outputs.bin_name }}
+          path: ${{ steps.build.outputs.bin_name }}
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Collect binaries
+        run: |
+          mkdir -p release
+          find artifacts -type f -exec mv {} release/ \;
+          ls -lh release/
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/*
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-') }}

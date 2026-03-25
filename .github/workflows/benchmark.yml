@@ -1,0 +1,49 @@
+name: Benchmark
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  benchmark:
+    name: Run benchmarks
+    runs-on: ubuntu-latest
+    if: ${{ vars.BENCHMARKS_ENABLED == 'true' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache: true
+
+      - name: Build Inari
+        run: make build
+
+      - name: Build benchmark runner
+        run: go build -o bin/inari-benchmark ./cmd/benchmark/
+
+      - name: Setup Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Run benchmarks
+        run: bin/inari-benchmark run --all --compare --reps 5
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Commit results
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add benchmarks/results/
+          git diff --cached --quiet || {
+            git commit -m "bench: add results for v${VERSION}"
+            git push
+          }

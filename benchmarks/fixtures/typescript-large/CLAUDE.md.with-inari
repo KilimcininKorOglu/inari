@@ -1,0 +1,37 @@
+## Code Navigation — Inari CLI
+
+This project is indexed with Inari for structural code intelligence.
+
+### Workflows (follow these exactly)
+
+**Discovery** ("find X and modify it"):
+`inari find "<description>"` → Read target file → EDIT
+
+**Bug fixing** ("X is broken, find and fix"):
+`inari trace <symbol>` → Read suspected file → EDIT
+
+**Refactoring** ("restructure X"):
+`inari sketch <class>` → Read target + related files → EDIT
+
+**New feature** ("build something integrating X, Y, Z"):
+`inari map` → `inari sketch` each dependency → Read 1-2 patterns → EDIT
+
+**Exploration** ("document the architecture"):
+`inari map` → `inari entrypoints` → Read 2-3 key files → Write docs
+
+### Commands
+
+| Command | Use When |
+|---|---|
+| `inari map` | Start of complex tasks — full repo overview |
+| `inari entrypoints` | Finding controllers, workers, handlers |
+| `inari sketch <class>` | Understanding a class API without reading source |
+| `inari callers <method>` | Finding who calls a method |
+| `inari trace <symbol>` | Bug fixing — see how requests reach the code |
+| `inari find "<query>"` | Finding code by description (don't know the name) |
+
+### Rules
+1. **Max 3 scope commands before editing.** If you've run 3 without editing, start editing.
+2. **Don't sketch what you'll read** — sketch is for understanding without opening the file.
+3. **Don't run find + grep** for the same thing — pick one.
+4. **Use `inari map` instead of 3+ sketches** — it's one command for the full picture.

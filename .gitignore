@@ -1,0 +1,9 @@
+# Build artifacts
+bin/
+
+# Test binaries
+*.test
+
+# OS
+.DS_Store
+.inari/
