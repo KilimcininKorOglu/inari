@@ -89,3 +89,11 @@ var LuaSymbolsQuery string
 
 //go:embed lua/edges.scm
 var LuaEdgesQuery string
+
+// Swift queries
+
+//go:embed swift/symbols.scm
+var SwiftSymbolsQuery string
+
+//go:embed swift/edges.scm
+var SwiftEdgesQuery string

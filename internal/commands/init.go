@@ -166,6 +166,12 @@ func detectLanguages(projectRoot string) []string {
 		languages = append(languages, "php")
 	}
 
+	// Swift detection.
+	if fileExists(filepath.Join(projectRoot, "Package.swift")) ||
+		hasXcodeProject(projectRoot) {
+		languages = append(languages, "swift")
+	}
+
 	// Lua detection.
 	if fileExists(filepath.Join(projectRoot, ".luarc.json")) ||
 		fileExists(filepath.Join(projectRoot, ".luarc.jsonc")) ||
@@ -190,6 +196,24 @@ func hasCSharpFiles(projectRoot string) bool {
 		}
 		name := entry.Name()
 		if strings.HasSuffix(name, ".csproj") || strings.HasSuffix(name, ".sln") {
+			return true
+		}
+	}
+	return false
+}
+
+// hasXcodeProject checks if the project root contains .xcodeproj or .xcworkspace directories.
+func hasXcodeProject(projectRoot string) bool {
+	entries, err := os.ReadDir(projectRoot)
+	if err != nil {
+		return false
+	}
+	for _, entry := range entries {
+		if !entry.IsDir() {
+			continue
+		}
+		name := entry.Name()
+		if strings.HasSuffix(name, ".xcodeproj") || strings.HasSuffix(name, ".xcworkspace") {
 			return true
 		}
 	}
@@ -248,6 +272,8 @@ func languageDisplayName(lang string) string {
 		return "PHP"
 	case "lua":
 		return "Lua"
+	case "swift":
+		return "Swift"
 	default:
 		return lang
 	}

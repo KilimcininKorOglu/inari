@@ -85,6 +85,7 @@ func NewIndexer() (*Indexer, error) {
 		&languages.RubyPlugin{},
 		&languages.PhpPlugin{},
 		&languages.LuaPlugin{},
+		&languages.SwiftPlugin{},
 	}
 
 	for _, plugin := range plugins {
