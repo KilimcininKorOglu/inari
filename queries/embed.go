@@ -97,3 +97,11 @@ var SwiftSymbolsQuery string
 
 //go:embed swift/edges.scm
 var SwiftEdgesQuery string
+
+// Bash queries
+
+//go:embed bash/symbols.scm
+var BashSymbolsQuery string
+
+//go:embed bash/edges.scm
+var BashEdgesQuery string

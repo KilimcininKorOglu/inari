@@ -172,6 +172,11 @@ func detectLanguages(projectRoot string) []string {
 		languages = append(languages, "swift")
 	}
 
+	// Bash/Shell detection.
+	if hasBashFiles(projectRoot) {
+		languages = append(languages, "bash")
+	}
+
 	// Lua detection.
 	if fileExists(filepath.Join(projectRoot, ".luarc.json")) ||
 		fileExists(filepath.Join(projectRoot, ".luarc.jsonc")) ||
@@ -196,6 +201,23 @@ func hasCSharpFiles(projectRoot string) bool {
 		}
 		name := entry.Name()
 		if strings.HasSuffix(name, ".csproj") || strings.HasSuffix(name, ".sln") {
+			return true
+		}
+	}
+	return false
+}
+
+// hasBashFiles checks if the project root contains .sh files.
+func hasBashFiles(projectRoot string) bool {
+	entries, err := os.ReadDir(projectRoot)
+	if err != nil {
+		return false
+	}
+	for _, entry := range entries {
+		if entry.IsDir() {
+			continue
+		}
+		if strings.HasSuffix(entry.Name(), ".sh") {
 			return true
 		}
 	}
@@ -274,6 +296,8 @@ func languageDisplayName(lang string) string {
 		return "Lua"
 	case "swift":
 		return "Swift"
+	case "bash":
+		return "Bash"
 	default:
 		return lang
 	}

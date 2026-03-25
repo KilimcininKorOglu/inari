@@ -125,6 +125,8 @@ func (cp *CodeParser) DetectLanguage(path string) (languages.SupportedLanguage, 
 		return languages.Lua, nil
 	case "swift":
 		return languages.Swift, nil
+	case "sh", "bash":
+		return languages.Bash, nil
 	default:
 		return 0, fmt.Errorf("unsupported file extension: .%s", ext)
 	}

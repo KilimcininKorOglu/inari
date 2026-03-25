@@ -40,6 +40,8 @@ const (
 	Lua
 	// Swift represents .swift files.
 	Swift
+	// Bash represents .sh and .bash files.
+	Bash
 )
 
 // AsStr returns the language name as a lowercase identifier string.
@@ -67,6 +69,8 @@ func (l SupportedLanguage) AsStr() string {
 		return "lua"
 	case Swift:
 		return "swift"
+	case Bash:
+		return "bash"
 	default:
 		return "unknown"
 	}
@@ -97,6 +101,8 @@ func (l SupportedLanguage) String() string {
 		return "Lua"
 	case Swift:
 		return "Swift"
+	case Bash:
+		return "Bash"
 	default:
 		return fmt.Sprintf("SupportedLanguage(%d)", int(l))
 	}
