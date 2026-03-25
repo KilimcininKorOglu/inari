@@ -58,7 +58,7 @@ Verify:
 
 ```bash
 inari --version
-# inari 1.0.0
+# inari 1.1.0
 ```
 
 ---

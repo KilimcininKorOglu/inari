@@ -16,6 +16,7 @@ import (
 var version = "1.1.0"
 
 func main() {
+	commands.Version = version
 	cmd := commands.NewRootCommand()
 	cmd.Version = version
 	if err := cmd.Execute(); err != nil {

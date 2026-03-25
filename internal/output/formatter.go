@@ -94,6 +94,15 @@ type MemberListEntry struct {
 	SymbolCount int    `json:"symbol_count"`
 }
 
+// UpdateData holds the result of an update check or update operation.
+type UpdateData struct {
+	CurrentVersion  string `json:"current_version"`
+	LatestVersion   string `json:"latest_version"`
+	UpdateAvailable bool   `json:"update_available"`
+	DownloadURL     string `json:"download_url,omitempty"`
+	Updated         bool   `json:"updated"`
+}
+
 // IncrementalStats holds the result of an incremental index operation.
 type IncrementalStats struct {
 	Modified     []string `json:"modified"`

@@ -36,6 +36,11 @@ func NewRootCommand() *cobra.Command {
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			verbose, _ := cmd.Flags().GetBool("verbose")
 			setupLogging(verbose)
+
+			noUpdateCheck, _ := cmd.Flags().GetBool("no-update-check")
+			if !noUpdateCheck && cmd.Name() != "update" {
+				go backgroundUpdateCheck(Version)
+			}
 		},
 	}
 
@@ -44,6 +49,8 @@ func NewRootCommand() *cobra.Command {
 		"Query across all workspace members (requires inari-workspace.toml)")
 	rootCmd.PersistentFlags().String("project", "",
 		"Target a specific workspace member by name")
+	rootCmd.PersistentFlags().Bool("no-update-check", false,
+		"Disable automatic update checks")
 
 	rootCmd.AddCommand(newInitCmd())
 	rootCmd.AddCommand(newIndexCmd())
@@ -61,6 +68,7 @@ func NewRootCommand() *cobra.Command {
 	rootCmd.AddCommand(newMapCmd())
 	rootCmd.AddCommand(newStatusCmd())
 	rootCmd.AddCommand(newWorkspaceCmd())
+	rootCmd.AddCommand(newUpdateCmd())
 
 	return rootCmd
 }
