@@ -10,7 +10,7 @@ Structural code intelligence for LLM coding agents.
 
 Inari builds a local code intelligence index and exposes it through a CLI optimised for LLM coding agents. An agent runs `inari sketch PaymentService` and receives class structure, method signatures, caller counts, and the dependency surface in ~180 tokens -- without reading the 6,000-token source file.
 
-The index is built from tree-sitter AST parsing, stored in a SQLite dependency graph with FTS5 full-text search, and queried through 18 commands that return structured, token-efficient output. Everything lives in a `.inari/` directory. No server, no Docker, no API key.
+The index is built from tree-sitter AST parsing, stored in a SQLite dependency graph with FTS5 full-text search, and queried through 19 commands that return structured, token-efficient output. Everything lives in a `.inari/` directory. No server, no Docker, no API key.
 
 ```
 $ inari sketch PaymentService
@@ -133,15 +133,15 @@ inari index --watch                      # auto re-index on file changes
 
 ## Supported languages
 
-| Language   | Status  | Highlights                                                           |
-|------------|---------|----------------------------------------------------------------------|
-| TypeScript | Ready   | Full edge detection, async/static/abstract modifiers, JSX support.   |
-| C#         | Ready   | Partial class merging, visibility modifiers, async/virtual/override. |
-| Python     | Ready   | Decorator extraction, docstring capture, classmethod/staticmethod.   |
-| Rust       | Ready   | Impl block association, visibility modifiers (`pub`, `pub(crate)`).  |
-| Go         | Ready   | Exported/unexported detection, receiver types, composite literals.   |
-| Java       | Ready   | Access modifiers, abstract/final/synchronized, extends/implements.   |
-| Kotlin     | Ready   | Visibility modifiers, data/sealed/inner classes, suspend/inline.     |
+| Language   | Status | Highlights                                                           |
+|------------|--------|----------------------------------------------------------------------|
+| TypeScript | Ready  | Full edge detection, async/static/abstract modifiers, JSX support.   |
+| C#         | Ready  | Partial class merging, visibility modifiers, async/virtual/override. |
+| Python     | Ready  | Decorator extraction, docstring capture, classmethod/staticmethod.   |
+| Rust       | Ready  | Impl block association, visibility modifiers (`pub`, `pub(crate)`).  |
+| Go         | Ready  | Exported/unexported detection, receiver types, composite literals.   |
+| Java       | Ready  | Access modifiers, abstract/final/synchronized, extends/implements.   |
+| Kotlin     | Ready  | Visibility modifiers, data/sealed/inner classes, suspend/inline.     |
 
 Each language is a plugin: a tree-sitter grammar and two `.scm` query files (`symbols.scm`, `edges.scm`). Adding a new language requires ~200 lines of Go.
 
@@ -159,7 +159,7 @@ tree-sitter parser .............. Fast, error-tolerant AST parsing.
 SQLite graph DB + FTS5 search .. Symbols, edges, file hashes.
     |                              BM25-ranked full-text search.
     v
-inari CLI ...................... 18 commands. Token-efficient output.
+inari CLI ...................... 19 commands. Token-efficient output.
                                    Human-readable or --json.
 ```
 
