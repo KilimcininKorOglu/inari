@@ -119,6 +119,8 @@ func (cp *CodeParser) DetectLanguage(path string) (languages.SupportedLanguage, 
 		return languages.Rust, nil
 	case "rb":
 		return languages.Ruby, nil
+	case "php":
+		return languages.Php, nil
 	default:
 		return 0, fmt.Errorf("unsupported file extension: .%s", ext)
 	}
@@ -189,6 +191,10 @@ func (cp *CodeParser) ExtractSymbols(filePath string, source []byte, lang langua
 				nameText = text
 				// Strip leading ':' from Ruby symbol literals (e.g. :name from attr_accessor).
 				if len(nameText) > 1 && nameText[0] == ':' {
+					nameText = nameText[1:]
+				}
+				// Strip leading '$' from PHP variable names (e.g. $property).
+				if len(nameText) > 1 && nameText[0] == '$' {
 					nameText = nameText[1:]
 				}
 				hasName = true

@@ -2,7 +2,7 @@
 
 ## Shipped
 
-- [x] TypeScript, C#, Python, Rust, Go, Java, Kotlin, Ruby symbol extraction with edge detection
+- [x] TypeScript, C#, Python, Rust, Go, Java, Kotlin, Ruby, PHP symbol extraction with edge detection
 - [x] SQLite dependency graph with recursive impact traversal
 - [x] Full-text search with FTS5, BM25 ranking, importance-tier boosting
 - [x] 19 commands including rdeps, similar, source (fully implemented)
@@ -20,5 +20,4 @@
 
 ## Later
 
-- [ ] PHP language support
 - [ ] ASP language support

@@ -160,6 +160,12 @@ func detectLanguages(projectRoot string) []string {
 		languages = append(languages, "ruby")
 	}
 
+	// PHP detection.
+	if fileExists(filepath.Join(projectRoot, "composer.json")) ||
+		fileExists(filepath.Join(projectRoot, "artisan")) {
+		languages = append(languages, "php")
+	}
+
 	return languages
 }
 
@@ -209,6 +215,8 @@ func languageDisplayName(lang string) string {
 		return "Rust"
 	case "ruby":
 		return "Ruby"
+	case "php":
+		return "PHP"
 	default:
 		return lang
 	}

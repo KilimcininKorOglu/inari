@@ -73,3 +73,11 @@ var RubySymbolsQuery string
 
 //go:embed ruby/edges.scm
 var RubyEdgesQuery string
+
+// PHP queries
+
+//go:embed php/symbols.scm
+var PhpSymbolsQuery string
+
+//go:embed php/edges.scm
+var PhpEdgesQuery string

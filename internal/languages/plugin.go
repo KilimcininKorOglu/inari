@@ -34,6 +34,8 @@ const (
 	Rust
 	// Ruby represents .rb files.
 	Ruby
+	// Php represents .php files.
+	Php
 )
 
 // AsStr returns the language name as a lowercase identifier string.
@@ -55,6 +57,8 @@ func (l SupportedLanguage) AsStr() string {
 		return "rust"
 	case Ruby:
 		return "ruby"
+	case Php:
+		return "php"
 	default:
 		return "unknown"
 	}
@@ -79,6 +83,8 @@ func (l SupportedLanguage) String() string {
 		return "Rust"
 	case Ruby:
 		return "Ruby"
+	case Php:
+		return "PHP"
 	default:
 		return fmt.Sprintf("SupportedLanguage(%d)", int(l))
 	}
