@@ -1,113 +1,53 @@
-```
-+-------------------------------------------------------+
-|                                                       |
-|   ██╗███╗   ██╗ █████╗ ██████╗ ██╗                    |
-|   ██║████╗  ██║██╔══██╗██╔══██╗██║                    |
-|   ██║██╔██╗ ██║███████║██████╔╝██║                    |
-|   ██║██║╚██╗██║██╔══██║██╔══██╗██║                    |
-|   ██║██║ ╚████║██║  ██║██║  ██║██║                    |
-|   ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝                    |
-|                                                       |
-|   Code intelligence for LLM coding agents.            |
-|   Know before you touch.                              |
-|                                                       |
-+-------------------------------------------------------+
-```
+# Inari
+
+Structural code intelligence for LLM coding agents.
 
 [![Go](https://img.shields.io/badge/built_with-Go-00ADD8?logo=go&logoColor=white)](https://go.dev)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-v1.0.0-blue.svg)](https://github.com/KilimcininKorOglu/inari/releases)
-[![Build](https://img.shields.io/badge/build-passing-22863a)](https://github.com/KilimcininKorOglu/inari/actions)
-[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-lightgrey)](#installation)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![CI](https://github.com/KilimcininKorOglu/inari/actions/workflows/ci.yml/badge.svg)](https://github.com/KilimcininKorOglu/inari/actions/workflows/ci.yml)
 [![Website](https://img.shields.io/badge/website-inari.hermestech.uk-e8843c)](https://inari.hermestech.uk)
 
----
+Inari builds a local code intelligence index and exposes it through a CLI optimised for LLM coding agents. An agent runs `inari sketch PaymentService` and receives class structure, method signatures, caller counts, and the dependency surface in ~180 tokens -- without reading the 6,000-token source file.
 
-## Table of contents
-
-- [What it does](#what-it-does)
-- [Supported languages](#supported-languages)
-- [Installation](#installation)
-- [Quick start](#quick-start)
-- [Commands](#commands)
-- [Watch mode](#watch-mode)
-- [Workspaces](#workspaces)
-- [How it works](#how-it-works)
-- [Configuration](#configuration)
-- [CLAUDE.md integration](#claudemd-integration)
-- [Building from source](#building-from-source)
-- [Roadmap](#roadmap)
-- [License](#license)
-
----
-
-## What it does
-
-Inari builds a local code intelligence index for any codebase and exposes it through a CLI designed for LLM coding agents. Before an agent edits a function, it can run `inari sketch PaymentService` and get back the class structure, method signatures, caller counts, and dependency surface in approximately 180 tokens -- without reading the 6,000-token source file.
-
-The index is built from tree-sitter AST parsing (fast, error-tolerant, no compiler required), stored in a SQLite dependency graph with FTS5 full-text search, and queried through commands that return structured, agent-readable output. Everything lives in a `.inari/` directory in your project root. No server process, no Docker, no API key required.
-
-Inari integrates with Claude Code, Cursor, Aider, and any other agent that can run a shell command. Add the provided CLAUDE.md snippet to your project and agents will use it automatically.
+The index is built from tree-sitter AST parsing, stored in a SQLite dependency graph with FTS5 full-text search, and queried through 18 commands that return structured, token-efficient output. Everything lives in a `.inari/` directory. No server, no Docker, no API key.
 
 ```
 $ inari sketch PaymentService
 
 PaymentService                                    class  src/payments/service.ts:12-89
-─────────────────────────────────────────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────────────────────────
 deps:      StripeClient, UserRepository, Logger, PaymentConfig
 extends:   BaseService
 implements: IPaymentService
 
 methods:
-  async  processPayment  (amount: Decimal, userId: string) → Promise<PaymentResult>   [11 callers]
-         refundPayment   (txId: string, reason?: string)   → Promise<bool>             [3 callers]
-  private validateCard   (card: CardDetails)               → ValidationResult          [internal]
-         getTransaction  (id: string)                      → Transaction | null        [2 callers]
+  async  processPayment  (amount: Decimal, userId: string)  -> Promise<PaymentResult>   [11 callers]
+         refundPayment   (txId: string, reason?: string)    -> Promise<bool>             [3 callers]
+  private validateCard   (card: CardDetails)                -> ValidationResult          [internal]
+         getTransaction  (id: string)                       -> Transaction | null        [2 callers]
 
 fields:
   private readonly  client  : StripeClient
   private           repo    : UserRepository
   private           logger  : Logger
 
-// ~180 tokens  ·  source file is 6,200 tokens
+// ~180 tokens  |  source file is 6,200 tokens
 ```
-
----
-
-## Supported languages
-
-### Production-ready
-
-![TypeScript](https://img.shields.io/badge/TypeScript-ready-22863a?style=flat-square&logo=typescript&logoColor=white)
-![C#](https://img.shields.io/badge/C%23-ready-22863a?style=flat-square&logo=csharp&logoColor=white)
-![Python](https://img.shields.io/badge/Python-ready-22863a?style=flat-square&logo=python&logoColor=white)
-![Rust](https://img.shields.io/badge/Rust-ready-22863a?style=flat-square&logo=rust&logoColor=white)
-
-All four languages have full support: tree-sitter grammar integration, symbol extraction, edge detection (calls, imports, extends, implements), and enriched metadata (async, static, private, abstract, decorators, visibility). C# includes partial class merging; Python includes decorator and docstring extraction; Rust includes impl block method association and visibility modifiers.
-
-### Planned
-
-![Go](https://img.shields.io/badge/Go-planned-e6a817?style=flat-square&logo=go&logoColor=white)
-![Java](https://img.shields.io/badge/Java-planned-e6a817?style=flat-square&logo=openjdk&logoColor=white)
 
 ---
 
 ## Installation
 
-### curl (Linux and macOS)
-
 ```bash
+# Option 1: go install
+go install github.com/KilimcininKorOglu/inari/cmd/inari@latest
+
+# Option 2: curl (Linux and macOS)
 curl -fsSL https://raw.githubusercontent.com/KilimcininKorOglu/inari/main/install.sh | sh
 ```
 
-### go install
-
-```bash
-go install github.com/KilimcininKorOglu/inari/cmd/inari@latest
-```
-
-After installation, verify with:
+Verify:
 
 ```bash
 inari --version
@@ -118,56 +58,12 @@ inari --version
 
 ## Quick start
 
-### 1. Initialise
-
-Run once from your project root. Detects languages and writes a default `.inari/config.toml`.
-
 ```bash
-inari init
-```
-
-```
-Initialised .inari/ for project: api
-Detected languages: TypeScript
-Run 'inari index' to build the index.
-```
-
-### 2. Build the index
-
-First run indexes the full codebase. Subsequent runs are incremental -- only changed files are re-indexed.
-
-```bash
-inari index
-```
-
-```
-Indexing 847 files...
-  TypeScript   612 files   4,821 symbols
-  C#           235 files   1,943 symbols
-Built in 12.4s. Index size: 8.2MB
-```
-
-### 3. Explore the codebase
-
-Start with the high-level overview, then drill down.
-
-```bash
-inari map                                # full repo overview (~500-1000 tokens)
-inari entrypoints                        # API controllers, workers, event handlers
+inari init                               # detect languages, create .inari/config.toml
+inari index                              # build the index (incremental on subsequent runs)
 inari sketch PaymentService              # structural overview of a class
 inari refs processPayment                # find all callers
-inari callers processPayment --depth 2   # transitive callers
-inari trace processPayment               # entry-point-to-symbol call paths
-inari deps PaymentService                # what does it depend on?
-inari find "payment retry logic"         # semantic search
-inari status                             # is my index fresh?
-```
-
-### 4. Keep the index fresh
-
-```bash
-inari status                             # check freshness
-inari index                              # incremental -- < 1s for a few files
+inari find "payment retry logic"         # full-text search by intent
 inari index --watch                      # auto re-index on file changes
 ```
 
@@ -175,101 +71,94 @@ inari index --watch                      # auto re-index on file changes
 
 ## Commands
 
-| Command             | Signature                                     | Description                                    |
-|---------------------|-----------------------------------------------|------------------------------------------------|
-| `inari init`        | `[--json]`                                    | Initialise Inari for a project.                |
-| `inari index`       | `[--full] [--watch] [--json]`                 | Build or refresh the code index.               |
-| `inari map`         | `[--limit N] [--json]`                        | Full repository overview.                      |
-| `inari entrypoints` | `[--json]`                                    | List API controllers, workers, event handlers. |
-| `inari sketch`      | `<symbol> [--json]`                           | Compressed structural overview.                |
-| `inari refs`        | `<symbol> [--kind] [--limit N] [--json]`      | All references grouped by kind.                |
-| `inari callers`     | `<symbol> [--depth N] [--context N] [--json]` | Direct and transitive callers.                 |
-| `inari deps`        | `<symbol> [--depth 1-3] [--json]`             | What does this symbol depend on?               |
-| `inari rdeps`       | `<symbol> [--depth 1-3] [--json]`             | What depends on this symbol?                   |
-| `inari trace`       | `<symbol> [--limit N] [--json]`               | Call paths from entry points to target.        |
-| `inari find`        | `"<query>" [--kind] [--limit N] [--json]`     | Full-text search with BM25 ranking.            |
-| `inari similar`     | `<symbol> [--kind] [--json]`                  | Find structurally similar symbols.             |
-| `inari source`      | `<symbol> [--json]`                           | Fetch full source of a symbol.                 |
-| `inari status`      | `[--json]`                                    | Index health and freshness.                    |
-| `inari impact`      | `<symbol> [--depth] [--json]`                 | Deprecated -- delegates to `inari callers`.    |
-| `inari workspace`   | `init \| list \| index`                       | Manage multi-project workspaces.               |
+### Orientation
+
+| Command             | Description                                                                   |
+|---------------------|-------------------------------------------------------------------------------|
+| `inari map`         | Full repository overview: entry points, core symbols, architecture layers.    |
+| `inari entrypoints` | List API controllers, workers, and event handlers.                           |
+| `inari status`      | Index health: symbol count, file count, freshness, search availability.      |
+
+### Exploration
+
+| Command                                  | Description                                                     |
+|------------------------------------------|-----------------------------------------------------------------|
+| `inari sketch <symbol>`                  | Compressed structural overview with caller counts and deps.     |
+| `inari refs <symbol> [--kind K]`         | All references grouped by kind (calls, imports, extends, ...).  |
+| `inari callers <symbol> [--depth N]`     | Direct and transitive callers. Blast radius analysis.           |
+| `inari deps <symbol> [--depth 1-3]`      | Forward dependencies: what does this symbol depend on?          |
+| `inari rdeps <symbol> [--depth 1-3]`     | Reverse dependencies: what depends on this symbol?              |
+| `inari trace <symbol>`                   | Call paths from entry points to the target symbol.              |
+| `inari find "<query>" [--kind K]`        | Full-text search with BM25 ranking. Search by intent.           |
+| `inari similar <symbol>`                 | Find structurally similar symbols.                              |
+| `inari source <symbol>`                  | Fetch full source code of a symbol.                             |
+
+### Index management
+
+| Command                   | Description                                                        |
+|---------------------------|--------------------------------------------------------------------|
+| `inari init`              | Initialise Inari for a project. Detects languages automatically.   |
+| `inari index [--full]`    | Build or refresh the index. Incremental by default.                |
+| `inari index --watch`     | Monitor files and auto re-index with 300ms debounce.               |
+
+### Workspaces
+
+| Command                  | Description                                                         |
+|--------------------------|---------------------------------------------------------------------|
+| `inari workspace init`   | Discover projects and create `inari-workspace.toml`.                |
+| `inari workspace index`  | Index all workspace members.                                        |
+| `inari workspace list`   | List members with status and symbol counts.                         |
+| Any command `--workspace` | Fan out queries across all members.                                |
 
 ### Global flags
 
-| Flag          | Description                                                                       |
-|---------------|-----------------------------------------------------------------------------------|
-| `--workspace` | Query across all workspace members. Requires `inari-workspace.toml`.              |
-| `--project`   | Target a specific workspace member by name.                                       |
-| `--verbose`   | Enable debug output to stderr.                                                    |
-| `--json`      | Output structured JSON instead of human-readable text. Supported on all commands. |
+| Flag          | Description                                                  |
+|---------------|--------------------------------------------------------------|
+| `--json`      | Structured JSON output on all commands.                      |
+| `--workspace` | Query across all workspace members.                          |
+| `--project`   | Target a specific workspace member by name.                  |
+| `--verbose`   | Debug output to stderr.                                      |
 
 ---
 
-## Watch mode
+## Supported languages
 
-```bash
-inari index --watch
-```
+| Language   | Status | Highlights                                                              |
+|------------|--------|-------------------------------------------------------------------------|
+| TypeScript | Ready  | Full edge detection, async/static/abstract modifiers, JSX support.      |
+| C#         | Ready  | Partial class merging, visibility modifiers, async/virtual/override.    |
+| Python     | Ready  | Decorator extraction, docstring capture, classmethod/staticmethod.      |
+| Rust       | Ready  | Impl block association, visibility modifiers (`pub`, `pub(crate)`).     |
+| Go         | Planned |                                                                        |
+| Java       | Planned |                                                                        |
 
-Monitors your project for file changes and automatically re-indexes with a 300ms debounce. Uses `fsnotify` for cross-platform file system events. Respects `.gitignore` and config ignore patterns. A lock file (`.inari/.watch.lock`) prevents multiple watchers.
-
-### NDJSON output
-
-```bash
-inari index --watch --json
-```
-
-Emits newline-delimited JSON events: `start`, `reindex`, `stop`.
-
----
-
-## Workspaces
-
-Workspaces let you query across multiple Inari projects as a single unit.
-
-```bash
-# Initialise each project, then create workspace
-inari workspace init                     # discovers projects, creates inari-workspace.toml
-inari workspace index                    # index all members
-inari map --workspace                    # query across all projects
-inari refs PaymentService --workspace    # cross-project references
-```
+Each language is a plugin: a tree-sitter grammar and two `.scm` query files (`symbols.scm`, `edges.scm`). Adding a new language requires ~200 lines of Go.
 
 ---
 
 ## How it works
 
 ```
-Your codebase
-      |
-      v
-+-----------------------------+
-|  tree-sitter parser          |  Fast, incremental, error-tolerant AST parsing.
-|  (TypeScript, C#, ...)       |  No compiler required. Extracts symbols, types,
-+--------------+--------------+  modifiers, docstrings, line ranges.
-               |
-       +-------+--------+
-       v                v
-+----------+    +--------------+
-|  SQLite  |    | SQLite FTS5  |
-|  graph   |    |   search     |
-| symbols  |    | BM25-ranked  |
-| + edges  |    | symbol text  |
-+----------+    +--------------+
-       |                |
-       +-------+--------+
-               v
-+-----------------------------+
-|  inari query engine         |
-|  Token-efficient output     |
-+-----------------------------+
+Source files
+    |
+    v
+tree-sitter parser .............. Fast, error-tolerant AST parsing.
+    |                              No compiler required.
+    v
+SQLite graph DB + FTS5 search .. Symbols, edges, file hashes.
+    |                              BM25-ranked full-text search.
+    v
+inari CLI ...................... 18 commands. Token-efficient output.
+                                   Human-readable or --json.
 ```
+
+The index lives in `.inari/graph.db` (SQLite with WAL mode). Incremental indexing uses SHA-256 file hashing -- only changed files are re-parsed. Watch mode uses `fsnotify` with a 300ms debounce and an atomic lock file to prevent concurrent watchers.
 
 ---
 
 ## Configuration
 
-Inari reads `.inari/config.toml` in the project root.
+Inari reads `.inari/config.toml` in the project root:
 
 ```toml
 [project]
@@ -280,9 +169,6 @@ languages = ["typescript", "csharp"]
 ignore = ["node_modules", "dist", "build", ".git"]
 include_tests = true
 
-[embeddings]
-provider = "local"
-
 [output]
 max_refs = 20
 max_depth = 3
@@ -292,70 +178,52 @@ max_depth = 3
 
 ## Agent integration
 
-Inari works with any AI coding agent that can run shell commands. Add the snippet below to your agent's instruction file. The full version is at [`docs/CLAUDE.md.snippet`](docs/CLAUDE.md.snippet).
+Inari works with any AI coding agent that can execute shell commands. Add the snippet below to your agent's instruction file.
 
-| Agent                  | Instruction file                             |
-|------------------------|----------------------------------------------|
-| Claude Code            | `CLAUDE.md`                                  |
-| Cursor                 | `.cursor/rules/*.mdc` or `.cursorrules`      |
-| GitHub Copilot         | `.github/copilot-instructions.md`            |
-| Gemini CLI             | `GEMINI.md`                                  |
-| Codex                  | `AGENTS.md`                                  |
-| Aider                  | `.aider.conf.yml` (conventions section)      |
-| Windsurf / Codeium     | `.windsurfrules`                             |
-| Other agents           | Any project-level instruction file           |
+| Agent              | Instruction file                         |
+|--------------------|------------------------------------------|
+| Claude Code        | `CLAUDE.md`                              |
+| Cursor             | `.cursor/rules/*.mdc` or `.cursorrules`  |
+| GitHub Copilot     | `.github/copilot-instructions.md`        |
+| Gemini CLI         | `GEMINI.md`                              |
+| Codex              | `AGENTS.md`                              |
+| Aider              | `.aider.conf.yml`                        |
+| Windsurf / Codeium | `.windsurfrules`                         |
 
-### Snippet
+The full snippet is available at [`docs/CLAUDE.md.snippet`](docs/CLAUDE.md.snippet).
 
 ```markdown
 ## Code Navigation
 
-This project uses [Inari](https://github.com/KilimcininKorOglu/inari) for structural code intelligence.
-Start with `inari map` for a repo overview, then `inari sketch` for specific symbols.
+This project uses Inari for structural code intelligence.
 
-**Before editing a class or function:**
-- `inari sketch <symbol>` -- structural overview (~200 tokens)
-- `inari refs <symbol>` -- all references with file + line
-- `inari callers <symbol> [--depth N]` -- blast radius
+**Before editing:** `inari sketch <symbol>` | `inari refs <symbol>` | `inari callers <symbol> --depth N`
+**Finding code:** `inari find "<query>"`
+**Understanding flow:** `inari deps <symbol>` | `inari trace <symbol>` | `inari similar <symbol>`
 
-**Finding code:**
-- `inari find "<query>"` -- full-text search by intent
-
-**Understanding flow:**
-- `inari deps <symbol>` -- what does this depend on?
-- `inari trace <symbol>` -- call paths from entry points
-- `inari similar <symbol>` -- find structurally similar symbols
-- `inari source <symbol>` -- fetch full source code
-
-Always `inari sketch` before reading full source.
+Always sketch before reading source. Re-index after edits: `inari index`
 ```
 
 ---
 
 ## Building from source
 
-**Prerequisites:** Go 1.25 or later, C compiler (for tree-sitter CGO bindings)
+Prerequisites: Go 1.25+, C compiler (tree-sitter requires CGO).
 
 ```bash
 git clone https://github.com/KilimcininKorOglu/inari.git
 cd inari
-make build
-# Binaries at bin/inari and bin/inari-benchmark
-```
-
-Run the test suite:
-
-```bash
-make test                               # all tests
-make vet                                # lint
-make fmt-check                          # formatting check
+make build                     # bin/inari + bin/inari-benchmark
+make test                      # all tests (88+ integration + unit)
+make vet                       # go vet
+make fmt-check                 # formatting check
 ```
 
 ---
 
 ## Roadmap
 
-See [ROADMAP.md](ROADMAP.md) for the full roadmap including shipped features, next priorities, and long-term plans.
+See [ROADMAP.md](ROADMAP.md) for shipped features, next priorities, and long-term plans.
 
 ---
 
@@ -367,4 +235,4 @@ Inari is a Go port of [Scope](https://github.com/rynhardt-engelbrecht/scope), or
 
 ## License
 
-MIT -- see [LICENSE](LICENSE) for the full text.
+MIT -- see [LICENSE](LICENSE).
