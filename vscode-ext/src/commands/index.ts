@@ -7,7 +7,7 @@ export function registerIndexCommands(
   binaryPath: string
 ): vscode.Disposable[] {
   const reindex = vscode.commands.registerCommand("inari.reindex", async () => {
-    if (wm.isMultiRoot) {
+    if (wm.getAllClients().length > 1) {
       const clients = wm.getAllClients();
       const items = [
         { label: "$(sync) Reindex All", description: `${clients.length} projects`, all: true },
