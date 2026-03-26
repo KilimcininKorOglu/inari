@@ -1,5 +1,16 @@
 import * as vscode from "vscode";
 import type { InariClient } from "./inari";
+import type { StatusData, WorkspaceStatusData } from "./types";
+
+// Detect if status response is workspace format (has `totals` and `members`).
+function extractStatusData(data: unknown): StatusData {
+  const d = data as Record<string, unknown>;
+  if (d && "totals" in d && "members" in d) {
+    // Workspace format — use aggregate totals.
+    return (d as unknown as WorkspaceStatusData).totals;
+  }
+  return data as StatusData;
+}
 
 export class StatusBarManager implements vscode.Disposable {
   private item: vscode.StatusBarItem;
@@ -36,7 +47,7 @@ export class StatusBarManager implements vscode.Disposable {
 
     try {
       const result = await client.status();
-      const s = result.data;
+      const s = extractStatusData(result.data);
       if (!s.index_exists) {
         this.item.text = "$(warning) Inari: No index";
         this.item.tooltip = "Click to initialize and index the project.";
@@ -71,7 +82,7 @@ export class StatusBarManager implements vscode.Disposable {
         client.workspaceRoot.split("/").pop() ?? "unknown";
       try {
         const result = await client.status();
-        const s = result.data;
+        const s = extractStatusData(result.data);
         if (s.index_exists) {
           projectCount++;
           totalSymbols += s.symbol_count;

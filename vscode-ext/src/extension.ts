@@ -14,6 +14,15 @@ import { registerCallersCommand } from "./commands/callers";
 import { registerTraceCommand } from "./commands/trace";
 import { registerMapCommand } from "./commands/map";
 import { registerIndexCommands } from "./commands/index";
+import type { StatusData, WorkspaceStatusData } from "./types";
+
+function extractIndexExists(data: unknown): boolean {
+  const d = data as Record<string, unknown>;
+  if (d && "totals" in d && "members" in d) {
+    return (d as unknown as WorkspaceStatusData).totals.index_exists;
+  }
+  return (data as StatusData).index_exists;
+}
 
 export async function activate(
   context: vscode.ExtensionContext
@@ -45,7 +54,7 @@ export async function activate(
     await vscode.commands.executeCommand(
       "setContext",
       "inari.indexExists",
-      statusResult.data.index_exists
+      extractIndexExists(statusResult.data)
     );
   } catch {
     await vscode.commands.executeCommand("setContext", "inari.indexExists", false);
