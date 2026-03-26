@@ -135,7 +135,7 @@
   "scripts": {
     "compile": "node esbuild.mjs",
     "watch": "node esbuild.mjs --watch",
-    "package": "vsce package",
+    "package": "npx @vscode/vsce package",
     "lint": "tsc --noEmit"
   },
   "devDependencies": {
