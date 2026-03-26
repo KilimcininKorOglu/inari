@@ -76,7 +76,7 @@
       {
         "command": "inari.createWorkspace",
         "title": "Inari: Create Workspace",
-        "icon": "$(folder-library)"
+        "icon": "$(new-folder)"
       },
       {
         "command": "inari.workspaceIndex",
@@ -99,24 +99,29 @@
       ],
       "view/title": [
         {
+          "command": "inari.reindex",
+          "when": "view == inari.symbolExplorer",
+          "group": "navigation"
+        },
+        {
           "command": "inari.createWorkspace",
           "when": "view == inari.symbolExplorer",
-          "group": "navigation@1"
+          "group": "navigation"
         },
         {
           "command": "inari.workspaceIndex",
           "when": "view == inari.symbolExplorer",
-          "group": "navigation@2"
+          "group": "2_workspace"
         },
         {
           "command": "inari.workspaceList",
           "when": "view == inari.symbolExplorer",
-          "group": "navigation@3"
+          "group": "2_workspace"
         },
         {
-          "command": "inari.reindex",
+          "command": "inari.initProject",
           "when": "view == inari.symbolExplorer",
-          "group": "navigation@4"
+          "group": "3_init"
         }
       ]
     },
