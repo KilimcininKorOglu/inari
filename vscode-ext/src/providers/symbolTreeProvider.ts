@@ -4,7 +4,14 @@ import type { WorkspaceManager } from "../workspaceManager";
 import type { InariClient } from "../inari";
 import type { DirStats, SketchFileData, Symbol as InariSymbol } from "../types";
 
-type TreeItem = WorkspaceMemberItem | DirItem | FileItem | SymbolItem;
+type TreeItem = ActionItem | WorkspaceMemberItem | DirItem | FileItem | SymbolItem;
+
+interface ActionItem {
+  type: "action";
+  label: string;
+  icon: string;
+  command: string;
+}
 
 interface WorkspaceMemberItem {
   type: "workspace-member";
@@ -47,6 +54,18 @@ export class SymbolTreeProvider implements vscode.TreeDataProvider<TreeItem> {
 
   getTreeItem(element: TreeItem): vscode.TreeItem {
     switch (element.type) {
+      case "action": {
+        const item = new vscode.TreeItem(
+          element.label,
+          vscode.TreeItemCollapsibleState.None
+        );
+        item.iconPath = new vscode.ThemeIcon(element.icon);
+        item.command = {
+          command: element.command,
+          title: element.label,
+        };
+        return item;
+      }
       case "workspace-member": {
         const item = new vscode.TreeItem(
           element.name,
@@ -107,6 +126,8 @@ export class SymbolTreeProvider implements vscode.TreeDataProvider<TreeItem> {
     }
 
     switch (element.type) {
+      case "action":
+        return [];
       case "workspace-member":
         return this.getMemberChildren(element);
       case "dir":
@@ -119,19 +140,31 @@ export class SymbolTreeProvider implements vscode.TreeDataProvider<TreeItem> {
   }
 
   private getRootChildren(): TreeItem[] | Promise<TreeItem[]> {
+    const actions: ActionItem[] = this.wm.isMultiRoot
+      ? [
+          { type: "action", label: "Reindex Workspace", icon: "sync", command: "inari.workspaceIndex" },
+          { type: "action", label: "Workspace Members", icon: "list-tree", command: "inari.workspaceList" },
+          { type: "action", label: "Create Workspace", icon: "new-folder", command: "inari.createWorkspace" },
+        ]
+      : [
+          { type: "action", label: "Reindex", icon: "refresh", command: "inari.reindex" },
+          { type: "action", label: "Create Workspace", icon: "new-folder", command: "inari.createWorkspace" },
+        ];
+
     if (this.wm.isMultiRoot) {
       const clients = this.wm.getAllClients();
-      return clients.map((client) => ({
+      const members: TreeItem[] = clients.map((client) => ({
         type: "workspace-member" as const,
         name: client.workspaceRoot.split("/").pop() ?? "unknown",
         client,
         workspaceRoot: client.workspaceRoot,
       }));
+      return [...actions, ...members];
     }
 
     const client = this.wm.getAllClients()[0];
-    if (!client) return [];
-    return this.getArchitectureItems(client);
+    if (!client) return actions;
+    return this.getArchitectureItems(client).then((dirs) => [...actions, ...dirs]);
   }
 
   private async getMemberChildren(
