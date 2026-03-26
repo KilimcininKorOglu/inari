@@ -1,6 +1,7 @@
 src/**
 node_modules/**
 .inari/**
+.vscode/**
 tsconfig.json
 esbuild.mjs
 .gitignore
