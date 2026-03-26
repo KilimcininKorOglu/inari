@@ -1,12 +1,15 @@
 import * as vscode from "vscode";
-import type { InariClient } from "../inari";
+import type { WorkspaceManager } from "../workspaceManager";
 import type { SketchClassData, SketchMethodData, Symbol as InariSymbol } from "../types";
 
 export function registerSketchCommand(
-  client: InariClient,
+  wm: WorkspaceManager,
   outputChannel: vscode.OutputChannel
 ): vscode.Disposable {
   return vscode.commands.registerCommand("inari.sketchSymbol", async () => {
+    const client = await wm.getClientOrPick();
+    if (!client) return;
+
     const word = getWordAtCursor() ?? (await vscode.window.showInputBox({
       prompt: "Symbol name to sketch",
       placeHolder: "e.g. PaymentService",

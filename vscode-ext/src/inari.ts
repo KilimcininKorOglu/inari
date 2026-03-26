@@ -10,6 +10,9 @@ import type {
   MapData,
   StatusData,
   SketchFileData,
+  WorkspaceListData,
+  WorkspaceIndexData,
+  WorkspaceStatusData,
 } from "./types";
 
 export class InariError extends Error {
@@ -25,7 +28,7 @@ export class InariError extends Error {
 export class InariClient {
   constructor(
     private binaryPath: string,
-    private workspaceRoot: string
+    public readonly workspaceRoot: string
   ) {}
 
   async sketch(symbol: string): Promise<JsonEnvelope<SketchData>> {
@@ -133,6 +136,22 @@ export class InariClient {
 
   async similar(symbol: string): Promise<JsonEnvelope<SearchResult[]>> {
     return this.exec(["similar", symbol, "--json"]);
+  }
+
+  async workspaceList(): Promise<JsonEnvelope<WorkspaceListData>> {
+    return this.exec(["workspace", "list", "--json"]);
+  }
+
+  async workspaceIndex(full?: boolean): Promise<JsonEnvelope<WorkspaceIndexData>> {
+    const args = ["workspace", "index", "--json"];
+    if (full) {
+      args.push("--full");
+    }
+    return this.exec(args);
+  }
+
+  async workspaceStatus(): Promise<JsonEnvelope<WorkspaceStatusData>> {
+    return this.exec(["status", "--json"]);
   }
 
   async version(): Promise<string> {

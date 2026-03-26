@@ -11,15 +11,19 @@ export class IndexManager implements vscode.Disposable {
   private saveListener: vscode.Disposable | undefined;
   private disposed = false;
 
+  private folderName: string;
+
   constructor(
     private client: InariClient,
     private statusBar: StatusBarManager,
     private outputChannel: vscode.OutputChannel,
     private binaryPath: string,
     private workspaceRoot: string,
-    mode: IndexMode
+    mode: IndexMode,
+    folderName?: string
   ) {
     this.mode = mode;
+    this.folderName = folderName ?? "default";
   }
 
   start(): void {
@@ -58,15 +62,15 @@ export class IndexManager implements vscode.Disposable {
 
   async reindex(): Promise<void> {
     this.statusBar.showIndexing();
-    this.outputChannel.appendLine("[Inari] Reindexing...");
+    this.outputChannel.appendLine(`[Inari:${this.folderName}] Reindexing...`);
     try {
       await this.client.index();
-      this.outputChannel.appendLine("[Inari] Reindex complete.");
+      this.outputChannel.appendLine(`[Inari:${this.folderName}] Reindex complete.`);
       await this.statusBar.update("just now");
       return;
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      this.outputChannel.appendLine(`[Inari] Reindex failed: ${msg}`);
+      this.outputChannel.appendLine(`[Inari:${this.folderName}] Reindex failed: ${msg}`);
       vscode.window.showErrorMessage(`Inari reindex failed: ${msg}`);
     }
     await this.statusBar.update();
@@ -82,11 +86,11 @@ export class IndexManager implements vscode.Disposable {
       }
       this.debounceTimer = setTimeout(() => void this.reindex(), 2000);
     });
-    this.outputChannel.appendLine("[Inari] Index mode: onSave (2s debounce)");
+    this.outputChannel.appendLine(`[Inari:${this.folderName}] Index mode: onSave (2s debounce)`);
   }
 
   private startWatchMode(): void {
-    this.outputChannel.appendLine("[Inari] Starting watch mode...");
+    this.outputChannel.appendLine(`[Inari:${this.folderName}] Starting watch mode...`);
     const proc = spawn(this.binaryPath, ["index", "--watch", "--json"], {
       cwd: this.workspaceRoot,
       stdio: ["ignore", "pipe", "pipe"],
@@ -112,12 +116,12 @@ export class IndexManager implements vscode.Disposable {
       this.watchProcess = null;
       if (this.disposed) return;
       this.outputChannel.appendLine(
-        `[Inari] Watch process exited (code ${code})`
+        `[Inari:${this.folderName}] Watch process exited (code ${code})`
       );
       if (code !== 0) {
         setTimeout(() => {
           if (!this.disposed && this.mode === "watch") {
-            this.outputChannel.appendLine("[Inari] Restarting watch mode...");
+            this.outputChannel.appendLine(`[Inari:${this.folderName}] Restarting watch mode...`);
             this.startWatchMode();
           }
         }, 5000);
@@ -126,7 +130,7 @@ export class IndexManager implements vscode.Disposable {
 
     proc.on("error", (err) => {
       this.outputChannel.appendLine(
-        `[Inari] Watch process error: ${err.message}`
+        `[Inari:${this.folderName}] Watch process error: ${err.message}`
       );
       vscode.window.showWarningMessage(
         `Inari watch mode failed: ${err.message}`

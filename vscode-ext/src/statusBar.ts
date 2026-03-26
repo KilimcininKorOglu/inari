@@ -4,19 +4,38 @@ import type { InariClient } from "./inari";
 export class StatusBarManager implements vscode.Disposable {
   private item: vscode.StatusBarItem;
   private timer: ReturnType<typeof setInterval> | undefined;
+  private clients: InariClient[];
+  private multiRoot: boolean;
 
-  constructor(private client: InariClient) {
+  constructor(clients: InariClient[], multiRoot: boolean) {
+    this.clients = clients;
+    this.multiRoot = multiRoot;
     this.item = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Left,
       100
     );
-    this.item.command = "inari.reindex";
+    this.item.command = multiRoot ? "inari.workspaceList" : "inari.reindex";
     this.item.show();
   }
 
+  setClients(clients: InariClient[]): void {
+    this.clients = clients;
+  }
+
   async update(forceRelative?: string): Promise<void> {
+    if (this.multiRoot) {
+      await this.updateMultiRoot();
+    } else {
+      await this.updateSingle(forceRelative);
+    }
+  }
+
+  private async updateSingle(forceRelative?: string): Promise<void> {
+    const client = this.clients[0];
+    if (!client) return;
+
     try {
-      const result = await this.client.status();
+      const result = await client.status();
       const s = result.data;
       if (!s.index_exists) {
         this.item.text = "$(warning) Inari: No index";
@@ -39,6 +58,43 @@ export class StatusBarManager implements vscode.Disposable {
       this.item.tooltip =
         "Could not reach the inari binary. Check inari.path setting.";
     }
+  }
+
+  private async updateMultiRoot(): Promise<void> {
+    let totalSymbols = 0;
+    let totalFiles = 0;
+    let projectCount = 0;
+    const tooltipLines: string[] = [];
+
+    for (const client of this.clients) {
+      const folderName =
+        client.workspaceRoot.split("/").pop() ?? "unknown";
+      try {
+        const result = await client.status();
+        const s = result.data;
+        if (s.index_exists) {
+          projectCount++;
+          totalSymbols += s.symbol_count;
+          totalFiles += s.file_count;
+          tooltipLines.push(
+            `${folderName}: ${s.symbol_count} symbols (${s.last_indexed_relative ?? "unknown"})`
+          );
+        } else {
+          tooltipLines.push(`${folderName}: No index`);
+        }
+      } catch {
+        tooltipLines.push(`${folderName}: Error`);
+      }
+    }
+
+    this.item.text = `$(database) Inari: ${projectCount} projects (${totalSymbols} symbols)`;
+    this.item.tooltip = [
+      ...tooltipLines,
+      "",
+      `Total: ${totalFiles} files, ${totalSymbols} symbols`,
+      "",
+      "Click to see workspace members.",
+    ].join("\n");
   }
 
   showIndexing(): void {

@@ -185,3 +185,48 @@ export interface WatchEvent {
   symbols_added?: number;
   symbols_removed?: number;
 }
+
+// --- Workspace types ---
+
+export interface WorkspaceStatusData {
+  workspace_name: string;
+  members: MemberStatusData[];
+  totals: StatusData;
+}
+
+export interface MemberStatusData {
+  name: string;
+  status: StatusData;
+}
+
+export interface WorkspaceListData {
+  workspace_name: string;
+  members: MemberListEntry[];
+}
+
+export interface MemberListEntry {
+  name: string;
+  path: string;
+  status: string;
+  file_count: number;
+  symbol_count: number;
+  last_indexed_at: number | null;
+}
+
+export interface MemberIndexResult {
+  name: string;
+  path: string;
+  status: string;
+  mode: string;
+  symbol_count: number;
+  edge_count: number;
+  duration_secs: number;
+}
+
+export interface WorkspaceIndexData {
+  workspace_name: string;
+  members: MemberIndexResult[];
+  total_symbols: number;
+  total_edges: number;
+  total_duration_secs: number;
+}

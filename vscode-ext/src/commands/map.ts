@@ -1,11 +1,14 @@
 import * as vscode from "vscode";
-import type { InariClient } from "../inari";
+import type { WorkspaceManager } from "../workspaceManager";
 
 export function registerMapCommand(
-  client: InariClient,
+  wm: WorkspaceManager,
   outputChannel: vscode.OutputChannel
 ): vscode.Disposable {
   return vscode.commands.registerCommand("inari.showMap", async () => {
+    const client = await wm.getClientOrPick();
+    if (!client) return;
+
     try {
       const result = await client.map();
       const m = result.data;
@@ -36,8 +39,9 @@ export function registerMapCommand(
       if (m.core_symbols.length > 0) {
         outputChannel.appendLine("Core Symbols (by caller count):");
         for (const s of m.core_symbols) {
+          const project = s.project ? `[${s.project}] ` : "";
           outputChannel.appendLine(
-            `  ${s.name.padEnd(30)} ${s.kind.padEnd(12)} [${s.caller_count} callers]  ${s.file_path}`
+            `  ${project}${s.name.padEnd(30)} ${s.kind.padEnd(12)} [${s.caller_count} callers]  ${s.file_path}`
           );
         }
         outputChannel.appendLine("");

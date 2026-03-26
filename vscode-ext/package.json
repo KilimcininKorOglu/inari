@@ -25,6 +25,7 @@
   ],
   "activationEvents": [
     "workspaceContains:.inari/config.toml",
+    "workspaceContains:inari-workspace.toml",
     "onCommand:inari.initFolder",
     "onCommand:inari.createWorkspace"
   ],
@@ -74,6 +75,14 @@
       {
         "command": "inari.createWorkspace",
         "title": "Inari: Create Workspace"
+      },
+      {
+        "command": "inari.workspaceIndex",
+        "title": "Inari: Index Workspace"
+      },
+      {
+        "command": "inari.workspaceList",
+        "title": "Inari: Workspace Members"
       }
     ],
     "menus": {
@@ -91,11 +100,13 @@
         "inari.path": {
           "type": "string",
           "default": "inari",
+          "scope": "resource",
           "description": "Path to the inari binary."
         },
         "inari.indexMode": {
           "type": "string",
           "default": "onSave",
+          "scope": "resource",
           "enum": [
             "onSave",
             "watch",

@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
-import type { InariClient } from "../inari";
+import * as path from "path";
+import type { WorkspaceManager } from "../workspaceManager";
 import type { SketchFileData, Symbol as InariSymbol } from "../types";
 
 interface FileCache {
@@ -13,10 +14,7 @@ export class InariCodeLensProvider implements vscode.CodeLensProvider {
   private onDidChangeEmitter = new vscode.EventEmitter<void>();
   readonly onDidChangeCodeLenses = this.onDidChangeEmitter.event;
 
-  constructor(
-    private client: InariClient,
-    private workspaceRoot: string
-  ) {}
+  constructor(private wm: WorkspaceManager) {}
 
   refresh(): void {
     this.cache.clear();
@@ -32,10 +30,16 @@ export class InariCodeLensProvider implements vscode.CodeLensProvider {
       return this.buildLenses(cached);
     }
 
-    const relativePath = vscode.workspace.asRelativePath(document.uri, false);
+    const client = this.wm.getClientForUri(document.uri);
+    if (!client) return [];
+
+    const wsFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+    const relativePath = wsFolder
+      ? path.relative(wsFolder.uri.fsPath, document.uri.fsPath)
+      : vscode.workspace.asRelativePath(document.uri, false);
 
     try {
-      const result = await this.client.sketchFile(relativePath);
+      const result = await client.sketchFile(relativePath);
       if (token.isCancellationRequested) return [];
 
       const data = result.data as SketchFileData;

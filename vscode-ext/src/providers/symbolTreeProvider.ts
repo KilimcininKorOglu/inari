@@ -1,43 +1,61 @@
 import * as vscode from "vscode";
 import * as path from "path";
+import type { WorkspaceManager } from "../workspaceManager";
 import type { InariClient } from "../inari";
 import type { DirStats, SketchFileData, Symbol as InariSymbol } from "../types";
 
-type TreeItem = DirItem | FileItem | SymbolItem;
+type TreeItem = WorkspaceMemberItem | DirItem | FileItem | SymbolItem;
+
+interface WorkspaceMemberItem {
+  type: "workspace-member";
+  name: string;
+  client: InariClient;
+  workspaceRoot: string;
+}
 
 interface DirItem {
   type: "dir";
   dir: DirStats;
+  client: InariClient;
+  workspaceRoot: string;
 }
 
 interface FileItem {
   type: "file";
   filePath: string;
   directory: string;
+  client: InariClient;
+  workspaceRoot: string;
 }
 
 interface SymbolItem {
   type: "symbol";
   symbol: InariSymbol;
+  client: InariClient;
+  workspaceRoot: string;
 }
 
 export class SymbolTreeProvider implements vscode.TreeDataProvider<TreeItem> {
   private onDidChangeEmitter = new vscode.EventEmitter<TreeItem | undefined>();
   readonly onDidChangeTreeData = this.onDidChangeEmitter.event;
-  private architecture: DirStats[] = [];
 
-  constructor(
-    private client: InariClient,
-    private workspaceRoot: string
-  ) {}
+  constructor(private wm: WorkspaceManager) {}
 
   refresh(): void {
-    this.architecture = [];
     this.onDidChangeEmitter.fire(undefined);
   }
 
   getTreeItem(element: TreeItem): vscode.TreeItem {
     switch (element.type) {
+      case "workspace-member": {
+        const item = new vscode.TreeItem(
+          element.name,
+          vscode.TreeItemCollapsibleState.Collapsed
+        );
+        item.iconPath = new vscode.ThemeIcon("root-folder");
+        item.contextValue = "workspaceMember";
+        return item;
+      }
       case "dir": {
         const item = new vscode.TreeItem(
           element.dir.directory,
@@ -56,7 +74,7 @@ export class SymbolTreeProvider implements vscode.TreeDataProvider<TreeItem> {
         item.description = element.filePath;
         item.iconPath = new vscode.ThemeIcon("file-code");
         item.resourceUri = vscode.Uri.file(
-          path.join(this.workspaceRoot, element.filePath)
+          path.join(element.workspaceRoot, element.filePath)
         );
         return item;
       }
@@ -74,7 +92,7 @@ export class SymbolTreeProvider implements vscode.TreeDataProvider<TreeItem> {
           command: "vscode.open",
           title: "Open",
           arguments: [
-            vscode.Uri.file(path.join(this.workspaceRoot, s.file_path)),
+            vscode.Uri.file(path.join(element.workspaceRoot, s.file_path)),
             { selection: new vscode.Range(s.line_start - 1, 0, s.line_start - 1, 0) },
           ],
         };
@@ -89,29 +107,55 @@ export class SymbolTreeProvider implements vscode.TreeDataProvider<TreeItem> {
     }
 
     switch (element.type) {
+      case "workspace-member":
+        return this.getMemberChildren(element);
       case "dir":
-        return this.getDirChildren(element.dir.directory);
+        return this.getDirChildren(element);
       case "file":
-        return this.getFileChildren(element.filePath);
+        return this.getFileChildren(element);
       case "symbol":
-        return this.getSymbolChildren(element.symbol);
+        return this.getSymbolChildren(element);
     }
   }
 
-  private async getRootChildren(): Promise<TreeItem[]> {
-    if (this.architecture.length === 0) {
-      try {
-        const result = await this.client.map();
-        this.architecture = result.data.architecture;
-      } catch {
-        return [];
-      }
+  private getRootChildren(): TreeItem[] | Promise<TreeItem[]> {
+    if (this.wm.isMultiRoot) {
+      const clients = this.wm.getAllClients();
+      return clients.map((client) => ({
+        type: "workspace-member" as const,
+        name: client.workspaceRoot.split("/").pop() ?? "unknown",
+        client,
+        workspaceRoot: client.workspaceRoot,
+      }));
     }
-    return this.architecture.map((dir) => ({ type: "dir" as const, dir }));
+
+    const client = this.wm.getAllClients()[0];
+    if (!client) return [];
+    return this.getArchitectureItems(client);
   }
 
-  private async getDirChildren(directory: string): Promise<TreeItem[]> {
-    const dirPath = path.join(this.workspaceRoot, directory);
+  private async getMemberChildren(
+    member: WorkspaceMemberItem
+  ): Promise<TreeItem[]> {
+    return this.getArchitectureItems(member.client);
+  }
+
+  private async getArchitectureItems(client: InariClient): Promise<TreeItem[]> {
+    try {
+      const result = await client.map();
+      return result.data.architecture.map((dir) => ({
+        type: "dir" as const,
+        dir,
+        client,
+        workspaceRoot: client.workspaceRoot,
+      }));
+    } catch {
+      return [];
+    }
+  }
+
+  private async getDirChildren(element: DirItem): Promise<TreeItem[]> {
+    const dirPath = path.join(element.workspaceRoot, element.dir.directory);
     try {
       const entries = await vscode.workspace.fs.readDirectory(
         vscode.Uri.file(dirPath)
@@ -123,36 +167,48 @@ export class SymbolTreeProvider implements vscode.TreeDataProvider<TreeItem> {
         )
         .map(([name]) => ({
           type: "file" as const,
-          filePath: path.posix.join(directory, name),
-          directory,
+          filePath: path.posix.join(element.dir.directory, name),
+          directory: element.dir.directory,
+          client: element.client,
+          workspaceRoot: element.workspaceRoot,
         }));
     } catch {
       return [];
     }
   }
 
-  private async getFileChildren(filePath: string): Promise<TreeItem[]> {
+  private async getFileChildren(element: FileItem): Promise<TreeItem[]> {
     try {
-      const result = await this.client.sketchFile(filePath);
+      const result = await element.client.sketchFile(element.filePath);
       const data = result.data as SketchFileData;
       if (!data.symbols) return [];
       return data.symbols
         .filter((s) => !s.parent_id)
-        .map((s) => ({ type: "symbol" as const, symbol: s }));
+        .map((s) => ({
+          type: "symbol" as const,
+          symbol: s,
+          client: element.client,
+          workspaceRoot: element.workspaceRoot,
+        }));
     } catch {
       return [];
     }
   }
 
-  private async getSymbolChildren(symbol: InariSymbol): Promise<TreeItem[]> {
-    if (symbol.kind !== "class" && symbol.kind !== "interface") return [];
+  private async getSymbolChildren(element: SymbolItem): Promise<TreeItem[]> {
+    if (element.symbol.kind !== "class" && element.symbol.kind !== "interface") return [];
     try {
-      const result = await this.client.sketchFile(symbol.file_path);
+      const result = await element.client.sketchFile(element.symbol.file_path);
       const data = result.data as SketchFileData;
       if (!data.symbols) return [];
       return data.symbols
-        .filter((s) => s.parent_id === symbol.id)
-        .map((s) => ({ type: "symbol" as const, symbol: s }));
+        .filter((s) => s.parent_id === element.symbol.id)
+        .map((s) => ({
+          type: "symbol" as const,
+          symbol: s,
+          client: element.client,
+          workspaceRoot: element.workspaceRoot,
+        }));
     } catch {
       return [];
     }

@@ -10,8 +10,8 @@ export interface InariConfig {
   codeLensCallers: boolean;
 }
 
-export function getConfig(): InariConfig {
-  const cfg = vscode.workspace.getConfiguration("inari");
+export function getConfig(folderUri?: vscode.Uri): InariConfig {
+  const cfg = vscode.workspace.getConfiguration("inari", folderUri ?? null);
   return {
     binaryPath: cfg.get<string>("path", "inari"),
     indexMode: cfg.get<IndexMode>("indexMode", "onSave"),

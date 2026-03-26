@@ -1,13 +1,15 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import type { InariClient } from "../inari";
+import type { WorkspaceManager } from "../workspaceManager";
 import type { Reference } from "../types";
 
 export function registerCallersCommand(
-  client: InariClient,
-  workspaceRoot: string
+  wm: WorkspaceManager
 ): vscode.Disposable {
   return vscode.commands.registerCommand("inari.showCallers", async () => {
+    const client = await wm.getClientOrPick();
+    if (!client) return;
+
     const word = getWordAtCursor() ?? (await vscode.window.showInputBox({
       prompt: "Symbol name",
       placeHolder: "e.g. processPayment",
@@ -30,7 +32,7 @@ export function registerCallersCommand(
           .map(
             (r) =>
               new vscode.Location(
-                vscode.Uri.file(path.join(workspaceRoot, r.file_path)),
+                vscode.Uri.file(path.join(client.workspaceRoot, r.file_path)),
                 new vscode.Position((r.line ?? 1) - 1, 0)
               )
           );

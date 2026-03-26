@@ -1,24 +1,25 @@
 import * as vscode from "vscode";
 import * as path from "path";
+import type { WorkspaceManager } from "../workspaceManager";
 import type { InariClient } from "../inari";
 import type { Dependency } from "../types";
 
 interface DepItem {
   dep: Dependency;
+  client: InariClient;
 }
 
 export class DepsTreeProvider implements vscode.TreeDataProvider<DepItem> {
   private onDidChangeEmitter = new vscode.EventEmitter<DepItem | undefined>();
   readonly onDidChangeTreeData = this.onDidChangeEmitter.event;
   private currentSymbol: string | undefined;
+  private currentClient: InariClient | undefined;
 
-  constructor(
-    private client: InariClient,
-    private workspaceRoot: string
-  ) {}
+  constructor(private wm: WorkspaceManager) {}
 
-  setSymbol(symbol: string): void {
+  setSymbol(symbol: string, client: InariClient): void {
     this.currentSymbol = symbol;
+    this.currentClient = client;
     this.onDidChangeEmitter.fire(undefined);
   }
 
@@ -38,7 +39,7 @@ export class DepsTreeProvider implements vscode.TreeDataProvider<DepItem> {
       item.command = {
         command: "vscode.open",
         title: "Open",
-        arguments: [vscode.Uri.file(path.join(this.workspaceRoot, d.file_path))],
+        arguments: [vscode.Uri.file(path.join(element.client.workspaceRoot, d.file_path))],
       };
     }
 
@@ -47,10 +48,10 @@ export class DepsTreeProvider implements vscode.TreeDataProvider<DepItem> {
 
   async getChildren(element?: DepItem): Promise<DepItem[]> {
     if (!element) {
-      if (!this.currentSymbol) return [];
+      if (!this.currentSymbol || !this.currentClient) return [];
       try {
-        const result = await this.client.deps(this.currentSymbol);
-        return result.data.map((dep) => ({ dep }));
+        const result = await this.currentClient.deps(this.currentSymbol);
+        return result.data.map((dep) => ({ dep, client: this.currentClient! }));
       } catch {
         return [];
       }
@@ -59,8 +60,8 @@ export class DepsTreeProvider implements vscode.TreeDataProvider<DepItem> {
     if (element.dep.is_external) return [];
 
     try {
-      const result = await this.client.deps(element.dep.name);
-      return result.data.map((dep) => ({ dep }));
+      const result = await element.client.deps(element.dep.name);
+      return result.data.map((dep) => ({ dep, client: element.client }));
     } catch {
       return [];
     }

@@ -1,13 +1,15 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import type { InariClient } from "../inari";
+import type { WorkspaceManager } from "../workspaceManager";
 import type { SearchResult } from "../types";
 
 export function registerFindCommand(
-  client: InariClient,
-  workspaceRoot: string
+  wm: WorkspaceManager
 ): vscode.Disposable {
   return vscode.commands.registerCommand("inari.findSymbol", async () => {
+    const client = await wm.getClientOrPick();
+    if (!client) return;
+
     const query = await vscode.window.showInputBox({
       prompt: "Search query",
       placeHolder: "e.g. payment processing",
@@ -35,7 +37,7 @@ export function registerFindCommand(
       });
       if (!picked) return;
 
-      const filePath = path.join(workspaceRoot, picked.result.file_path);
+      const filePath = path.join(client.workspaceRoot, picked.result.file_path);
       const doc = await vscode.workspace.openTextDocument(filePath);
       const line = picked.result.line_start - 1;
       await vscode.window.showTextDocument(doc, {

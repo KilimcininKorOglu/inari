@@ -1,11 +1,14 @@
 import * as vscode from "vscode";
-import type { InariClient } from "../inari";
+import type { WorkspaceManager } from "../workspaceManager";
 
 export function registerDepsCommand(
-  client: InariClient,
+  wm: WorkspaceManager,
   outputChannel: vscode.OutputChannel
 ): vscode.Disposable {
   return vscode.commands.registerCommand("inari.showDependencies", async () => {
+    const client = await wm.getClientOrPick();
+    if (!client) return;
+
     const word = getWordAtCursor() ?? (await vscode.window.showInputBox({
       prompt: "Symbol name",
       placeHolder: "e.g. PaymentService",

@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import type { InariClient } from "../inari";
+import type { WorkspaceManager } from "../workspaceManager";
 import type { SketchClassData, SketchMethodData, Symbol as InariSymbol } from "../types";
 
 interface CacheEntry {
@@ -12,7 +12,7 @@ const CACHE_TTL_MS = 10_000;
 export class InariHoverProvider implements vscode.HoverProvider {
   private cache = new Map<string, CacheEntry>();
 
-  constructor(private client: InariClient) {}
+  constructor(private wm: WorkspaceManager) {}
 
   async provideHover(
     document: vscode.TextDocument,
@@ -27,16 +27,20 @@ export class InariHoverProvider implements vscode.HoverProvider {
 
     if (token.isCancellationRequested) return null;
 
-    const cached = this.cache.get(word);
+    const client = this.wm.getClientForUri(document.uri);
+    if (!client) return null;
+
+    const cacheKey = `${client.workspaceRoot}:${word}`;
+    const cached = this.cache.get(cacheKey);
     if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
       return this.buildHover(cached.data);
     }
 
     try {
-      const result = await this.client.sketch(word);
+      const result = await client.sketch(word);
       if (token.isCancellationRequested) return null;
 
-      this.cache.set(word, { data: result.data, timestamp: Date.now() });
+      this.cache.set(cacheKey, { data: result.data, timestamp: Date.now() });
       return this.buildHover(result.data);
     } catch {
       return null;
