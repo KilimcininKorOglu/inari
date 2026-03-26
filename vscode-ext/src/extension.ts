@@ -45,6 +45,18 @@ export async function activate(
     return;
   }
 
+  // Set context for welcome view.
+  try {
+    const statusResult = await client.status();
+    await vscode.commands.executeCommand(
+      "setContext",
+      "inari.indexExists",
+      statusResult.data.index_exists
+    );
+  } catch {
+    await vscode.commands.executeCommand("setContext", "inari.indexExists", false);
+  }
+
   // Status bar.
   const statusBar = new StatusBarManager(client);
   context.subscriptions.push(statusBar);
@@ -71,10 +83,9 @@ export async function activate(
     );
   }
 
-  // CodeLens provider (Phase 2).
-  let codeLensProvider: InariCodeLensProvider | undefined;
+  // CodeLens provider.
   if (config.codeLensEnabled && config.codeLensCallers) {
-    codeLensProvider = new InariCodeLensProvider(client, workspaceRoot);
+    const codeLensProvider = new InariCodeLensProvider(client, workspaceRoot);
     context.subscriptions.push(
       vscode.languages.registerCodeLensProvider(
         { scheme: "file" },
@@ -83,7 +94,7 @@ export async function activate(
     );
   }
 
-  // TreeView providers (Phase 2).
+  // TreeView providers.
   const symbolTree = new SymbolTreeProvider(client, workspaceRoot);
   const depsTree = new DepsTreeProvider(client, workspaceRoot);
   const callersTree = new CallersTreeProvider(client, workspaceRoot);
@@ -115,7 +126,7 @@ export async function activate(
   context.subscriptions.push(registerCallersCommand(client, workspaceRoot));
   context.subscriptions.push(registerTraceCommand(client, outputChannel));
   context.subscriptions.push(registerMapCommand(client, outputChannel));
-  for (const cmd of registerIndexCommands(client, indexManager)) {
+  for (const cmd of registerIndexCommands(client, indexManager, config.binaryPath)) {
     context.subscriptions.push(cmd);
   }
 

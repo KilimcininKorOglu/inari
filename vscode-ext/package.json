@@ -24,7 +24,9 @@
     "callers"
   ],
   "activationEvents": [
-    "workspaceContains:.inari/config.toml"
+    "workspaceContains:.inari/config.toml",
+    "onCommand:inari.initFolder",
+    "onCommand:inari.createWorkspace"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -64,8 +66,25 @@
       {
         "command": "inari.initProject",
         "title": "Inari: Initialize Project"
+      },
+      {
+        "command": "inari.initFolder",
+        "title": "Inari: Initialize Project Here"
+      },
+      {
+        "command": "inari.createWorkspace",
+        "title": "Inari: Create Workspace"
       }
     ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "inari.initFolder",
+          "when": "explorerResourceIsFolder",
+          "group": "7_modification@10"
+        }
+      ]
+    },
     "configuration": {
       "title": "Inari",
       "properties": {
@@ -130,7 +149,14 @@
           "name": "Callers"
         }
       ]
-    }
+    },
+    "viewsWelcome": [
+      {
+        "view": "inari.symbolExplorer",
+        "contents": "No Inari index found in this workspace.\n[Initialize Project](command:inari.initProject)\n[Create Workspace](command:inari.createWorkspace)\nTo get started, initialize Inari in your project or create a workspace manifest for multi-project setups.",
+        "when": "!inari.indexExists"
+      }
+    ]
   },
   "scripts": {
     "compile": "node esbuild.mjs",
