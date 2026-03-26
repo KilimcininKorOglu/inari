@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.5] - 2026-03-26
+
+### Added
+- VS Code extension (inari-code) with hover, CodeLens, TreeView, and 13 command palette commands
+- Multi-root workspace support in VS Code extension with per-folder clients and proxy pattern routing
+- Explorer context menu for initializing Inari in any folder
+- Always-visible action buttons in the Symbols sidebar tree
+- Extension README with full feature and settings documentation
+
+### Fixed
+- PHP const declarations with same-name values (`const X = X`) causing duplicate symbol IDs
+- Status bar showing "No index" when workspace manifest is present (workspace format detection)
+- Reindex command asking project picker unnecessarily in single-folder mode
+
 ## [1.4.0] - 2026-03-25
 
 ### Added
