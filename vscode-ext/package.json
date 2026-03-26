@@ -62,7 +62,8 @@
       },
       {
         "command": "inari.reindex",
-        "title": "Inari: Reindex"
+        "title": "Inari: Reindex",
+        "icon": "$(refresh)"
       },
       {
         "command": "inari.initProject",
@@ -74,15 +75,18 @@
       },
       {
         "command": "inari.createWorkspace",
-        "title": "Inari: Create Workspace"
+        "title": "Inari: Create Workspace",
+        "icon": "$(folder-library)"
       },
       {
         "command": "inari.workspaceIndex",
-        "title": "Inari: Index Workspace"
+        "title": "Inari: Index Workspace",
+        "icon": "$(sync)"
       },
       {
         "command": "inari.workspaceList",
-        "title": "Inari: Workspace Members"
+        "title": "Inari: Workspace Members",
+        "icon": "$(list-tree)"
       }
     ],
     "menus": {
@@ -91,6 +95,28 @@
           "command": "inari.initFolder",
           "when": "explorerResourceIsFolder",
           "group": "7_modification@10"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "inari.createWorkspace",
+          "when": "view == inari.symbolExplorer",
+          "group": "navigation@1"
+        },
+        {
+          "command": "inari.workspaceIndex",
+          "when": "view == inari.symbolExplorer",
+          "group": "navigation@2"
+        },
+        {
+          "command": "inari.workspaceList",
+          "when": "view == inari.symbolExplorer",
+          "group": "navigation@3"
+        },
+        {
+          "command": "inari.reindex",
+          "when": "view == inari.symbolExplorer",
+          "group": "navigation@4"
         }
       ]
     },
