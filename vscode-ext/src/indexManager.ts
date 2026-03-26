@@ -62,6 +62,8 @@ export class IndexManager implements vscode.Disposable {
     try {
       await this.client.index();
       this.outputChannel.appendLine("[Inari] Reindex complete.");
+      await this.statusBar.update("just now");
+      return;
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       this.outputChannel.appendLine(`[Inari] Reindex failed: ${msg}`);

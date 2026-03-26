@@ -14,7 +14,7 @@ export class StatusBarManager implements vscode.Disposable {
     this.item.show();
   }
 
-  async update(): Promise<void> {
+  async update(forceRelative?: string): Promise<void> {
     try {
       const result = await this.client.status();
       const s = result.data;
@@ -23,7 +23,7 @@ export class StatusBarManager implements vscode.Disposable {
         this.item.tooltip = "Click to initialize and index the project.";
         return;
       }
-      const relative = s.last_indexed_relative ?? "unknown";
+      const relative = forceRelative ?? s.last_indexed_relative ?? "unknown";
       this.item.text = `$(database) Inari: ${s.symbol_count} symbols (${relative})`;
       this.item.tooltip = [
         `Files: ${s.file_count}`,
