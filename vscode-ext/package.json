@@ -1,0 +1,147 @@
+{
+  "name": "inari-code",
+  "displayName": "Inari Code",
+  "description": "Structural code intelligence powered by Inari — tree-sitter parsing, dependency graphs, and full-text search for 16 languages.",
+  "version": "0.1.0",
+  "publisher": "kilimcininkorglu",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KilimcininKorOglu/inari"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "code intelligence",
+    "dependency graph",
+    "tree-sitter",
+    "references",
+    "callers"
+  ],
+  "activationEvents": [
+    "workspaceContains:.inari/config.toml"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "inari.sketchSymbol",
+        "title": "Inari: Sketch Symbol"
+      },
+      {
+        "command": "inari.findSymbol",
+        "title": "Inari: Find Symbol"
+      },
+      {
+        "command": "inari.showReferences",
+        "title": "Inari: Show References"
+      },
+      {
+        "command": "inari.showDependencies",
+        "title": "Inari: Show Dependencies"
+      },
+      {
+        "command": "inari.showCallers",
+        "title": "Inari: Show Callers"
+      },
+      {
+        "command": "inari.traceEntryPoints",
+        "title": "Inari: Trace to Entry Points"
+      },
+      {
+        "command": "inari.showMap",
+        "title": "Inari: Show Map"
+      },
+      {
+        "command": "inari.reindex",
+        "title": "Inari: Reindex"
+      },
+      {
+        "command": "inari.initProject",
+        "title": "Inari: Initialize Project"
+      }
+    ],
+    "configuration": {
+      "title": "Inari",
+      "properties": {
+        "inari.path": {
+          "type": "string",
+          "default": "inari",
+          "description": "Path to the inari binary."
+        },
+        "inari.indexMode": {
+          "type": "string",
+          "default": "onSave",
+          "enum": [
+            "onSave",
+            "watch",
+            "manual"
+          ],
+          "enumDescriptions": [
+            "Automatically re-index when files are saved (2s debounce).",
+            "Run inari index --watch as a background process.",
+            "Only re-index when triggered manually."
+          ],
+          "description": "How the index is kept up to date."
+        },
+        "inari.hoverEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show sketch summary on hover."
+        },
+        "inari.codeLensEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show caller counts above functions and classes."
+        },
+        "inari.codeLensCallers": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show caller count in CodeLens."
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "inari-explorer",
+          "title": "Inari",
+          "icon": "$(database)"
+        }
+      ]
+    },
+    "views": {
+      "inari-explorer": [
+        {
+          "id": "inari.symbolExplorer",
+          "name": "Symbols"
+        },
+        {
+          "id": "inari.depsTree",
+          "name": "Dependencies"
+        },
+        {
+          "id": "inari.callersTree",
+          "name": "Callers"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "compile": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "package": "vsce package",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.5.0"
+  }
+}
