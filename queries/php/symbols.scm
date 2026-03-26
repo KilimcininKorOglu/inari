@@ -31,7 +31,7 @@
   (property_element
     (variable_name) @name)) @definition
 
-;; Class constant declarations
+;; Class constant declarations (anchor to first child to skip value name)
 (const_declaration
   (const_element
-    (name) @name)) @definition
+    . (name) @name)) @definition
