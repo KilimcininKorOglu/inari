@@ -25,7 +25,7 @@ export class StatusBarManager implements vscode.Disposable {
       vscode.StatusBarAlignment.Left,
       100
     );
-    this.item.command = multiRoot ? "inari.workspaceList" : "inari.reindex";
+    this.item.command = multiRoot ? "inari.workspaceIndex" : "inari.reindex";
     this.item.show();
   }
 
@@ -104,7 +104,7 @@ export class StatusBarManager implements vscode.Disposable {
       "",
       `Total: ${totalFiles} files, ${totalSymbols} symbols`,
       "",
-      "Click to see workspace members.",
+      "Click to re-index workspace.",
     ].join("\n");
   }
 
